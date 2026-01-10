@@ -201,8 +201,8 @@ const resources = {
       "logout": "تسجيل الخروج",
       
       // Login Page
-      "nurseryConnect": "روضة كونكت",
-      "connectWithNursery": "تواصل مع حضانة طفلك",
+      "nurseryConnect": "رِفق",
+      "connectWithNursery": "توصَّل مع حضانة طفلك",
       "login": "تسجيل الدخول",
       "register": "التسجيل",
       "email": "البريد الإلكتروني",
