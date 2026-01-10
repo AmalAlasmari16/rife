@@ -7,6 +7,7 @@ import { Badge } from '../components/ui/badge';
 import { toast } from 'sonner';
 import { Baby, Activity, Clock, Utensils, Camera, Calendar, TrendingUp } from 'lucide-react';
 import { format } from 'date-fns';
+import { useTranslation } from 'react-i18next';
 
 export default function ParentDashboard({ user, onLogout }) {
   const [children, setChildren] = useState([]);
