@@ -32,7 +32,7 @@ export default function Navigation({ user, onLogout, activePage }) {
       {/* Mobile Bottom Navigation */}
       <div className="fixed bottom-0 left-0 right-0 md:hidden glassmorphism border-t border-border/50 rounded-t-3xl shadow-[0_-4px_20px_rgba(0,0,0,0.05)] z-50" data-testid="mobile-navigation">
         <div className="flex items-center justify-around p-3">
-          {navItems.slice(0, 4).map((item) => {
+          {navItems.slice(0, 3).map((item) => {
             const Icon = item.icon;
             const isActive = activePage === item.page;
             return (
@@ -49,6 +49,7 @@ export default function Navigation({ user, onLogout, activePage }) {
               </button>
             );
           })}
+          <LanguageSwitcher />
           <button
             onClick={onLogout}
             className="flex flex-col items-center gap-1 p-2 rounded-2xl transition-all text-destructive"
