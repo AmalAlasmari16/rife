@@ -1,9 +1,11 @@
 import { Home, MessageCircle, Calendar, FileText, Phone, DollarSign, User } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { LanguageSwitcher } from './LanguageSwitcher';
+import { useTranslation } from 'react-i18next';
 
 export default function Navigation({ user, onLogout, activePage }) {
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const parentNav = [
     { icon: Home, label: 'Home', path: '/parent', page: 'dashboard' },
