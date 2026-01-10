@@ -41,7 +41,7 @@ export default function Navigation({ user, onLogout, activePage }) {
                 className={`flex flex-col items-center gap-1 p-2 rounded-2xl transition-all ${
                   isActive ? 'text-primary' : 'text-muted-foreground'
                 }`}
-                data-testid={`nav-${item.page}`}
+                data-testid={`mobile-nav-${item.page}`}
               >
                 <Icon className={`h-5 w-5 ${isActive ? 'scale-110' : ''}`} />
                 <span className="text-xs font-medium">{item.label}</span>
@@ -69,7 +69,7 @@ export default function Navigation({ user, onLogout, activePage }) {
                         ? 'bg-primary text-primary-foreground'
                         : 'hover:bg-muted text-muted-foreground'
                     }`}
-                    data-testid={`nav-${item.page}`}
+                    data-testid={`desktop-nav-${item.page}`}
                   >
                     <Icon className="h-4 w-4" />
                     <span className="text-sm">{item.label}</span>
