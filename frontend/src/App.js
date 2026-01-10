@@ -74,9 +74,17 @@ function App() {
     <div className="App">
       <BrowserRouter>
         <Routes>
+          <Route path="/register-nursery" element={<NurseryRegistration />} />
+          
           <Route path="/login" element={
             !user ? <LoginPage onLogin={handleLogin} /> : 
-            <Navigate to={user.role === 'parent' ? '/parent' : '/worker'} />
+            <Navigate to={user.role === 'super_admin' ? '/admin' : (user.role === 'parent' ? '/parent' : '/worker')} />
+          } />
+          
+          <Route path="/admin" element={
+            user && user.role === 'super_admin' ? 
+            <AdminDashboard user={user} onLogout={handleLogout} /> : 
+            <Navigate to="/login" />
           } />
           
           <Route path="/parent" element={
@@ -116,7 +124,7 @@ function App() {
           } />
           
           <Route path="/" element={
-            <Navigate to={user ? (user.role === 'parent' ? '/parent' : '/worker') : '/login'} />
+            <Navigate to={user ? (user.role === 'super_admin' ? '/admin' : (user.role === 'parent' ? '/parent' : '/worker')) : '/login'} />
           } />
         </Routes>
       </BrowserRouter>
