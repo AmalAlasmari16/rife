@@ -185,6 +185,9 @@ const resources = {
   },
   ar: {
     translation: {
+      // App Name
+      "appName": "رِفق",
+      
       // Navigation
       "home": "الرئيسية",
       "messages": "الرسائل",
