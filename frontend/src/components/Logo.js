@@ -4,6 +4,7 @@
 // 2. Update the logoPath below to match your filename
 // 3. That's it!
 
+import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 
 export const Logo = ({ size = 'md', showText = true, className = '' }) => {
