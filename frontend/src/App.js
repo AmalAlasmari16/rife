@@ -11,6 +11,8 @@ import FilesPage from './pages/FilesPage';
 import EmergencyContactsPage from './pages/EmergencyContactsPage';
 import PaymentsPage from './pages/PaymentsPage';
 import ProfilePage from './pages/ProfilePage';
+import NurseryRegistration from './pages/NurseryRegistration';
+import AdminDashboard from './pages/AdminDashboard';
 import { Toaster } from './components/ui/sonner';
 import './i18n'; // Import i18n configuration
 
