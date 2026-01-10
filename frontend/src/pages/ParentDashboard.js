@@ -86,15 +86,15 @@ export default function ParentDashboard({ user, onLogout }) {
       <div className="max-w-7xl mx-auto p-4 md:p-8">
         {/* Header */}
         <div className="mb-8 animate-fade-in">
-          <h1 className="text-4xl md:text-5xl font-bold tracking-tight mb-2">Welcome, {user.name}</h1>
-          <p className="text-muted-foreground text-base">Here's what's happening with your children today</p>
+          <h1 className="text-4xl md:text-5xl font-bold tracking-tight mb-2">{t('welcomeName', { name: user.name })}</h1>
+          <p className="text-muted-foreground text-base">{t('happeningToday')}</p>
         </div>
 
         {/* Stats Overview */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
           <Card className="rounded-3xl border-border/50 shadow-sm card-hover" data-testid="stats-children">
             <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-medium text-muted-foreground">Children</CardTitle>
+              <CardTitle className="text-sm font-medium text-muted-foreground">{t('children')}</CardTitle>
               <Baby className="h-4 w-4 text-primary" />
             </CardHeader>
             <CardContent>
@@ -103,7 +103,7 @@ export default function ParentDashboard({ user, onLogout }) {
           </Card>
           <Card className="rounded-3xl border-border/50 shadow-sm card-hover" data-testid="stats-activities">
             <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-medium text-muted-foreground">Activities</CardTitle>
+              <CardTitle className="text-sm font-medium text-muted-foreground">{t('activities')}</CardTitle>
               <Activity className="h-4 w-4 text-primary" />
             </CardHeader>
             <CardContent>
@@ -112,7 +112,7 @@ export default function ParentDashboard({ user, onLogout }) {
           </Card>
           <Card className="rounded-3xl border-border/50 shadow-sm card-hover" data-testid="stats-messages">
             <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-medium text-muted-foreground">Messages</CardTitle>
+              <CardTitle className="text-sm font-medium text-muted-foreground">{t('messages')}</CardTitle>
               <TrendingUp className="h-4 w-4 text-primary" />
             </CardHeader>
             <CardContent>
