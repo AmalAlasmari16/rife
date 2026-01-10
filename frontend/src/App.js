@@ -12,6 +12,7 @@ import EmergencyContactsPage from './pages/EmergencyContactsPage';
 import PaymentsPage from './pages/PaymentsPage';
 import ProfilePage from './pages/ProfilePage';
 import { Toaster } from './components/ui/sonner';
+import './i18n'; // Import i18n configuration
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 export const API = `${BACKEND_URL}/api`;
