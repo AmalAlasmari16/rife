@@ -197,6 +197,17 @@ export default function LoginPage({ onLogin }) {
                 </Button>
               </form>
             </TabsContent>
+            <div className="text-center">
+              <Button
+                type="button"
+                variant="link"
+                onClick={() => window.location.href = '/register-nursery'}
+                className="text-sm"
+                data-testid="register-nursery-link"
+              >
+                Register your nursery
+              </Button>
+            </div>
           </Tabs>
         </CardContent>
       </Card>
