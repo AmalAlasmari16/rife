@@ -7,8 +7,10 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../co
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../components/ui/tabs';
 import { toast } from 'sonner';
 import { User, Lock, Mail, Phone, Users } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 export default function LoginPage({ onLogin }) {
+  const { t } = useTranslation();
   const [isLogin, setIsLogin] = useState(true);
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
