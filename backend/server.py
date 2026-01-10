@@ -36,6 +36,10 @@ app = FastAPI()
 api_router = APIRouter(prefix="/api")
 security = HTTPBearer()
 
+@app.get("/")
+async def root():
+    return {"message": "NurseryConnect API", "status": "running"}
+
 # ============ MODELS ============
 
 class NurseryRegistration(BaseModel):
