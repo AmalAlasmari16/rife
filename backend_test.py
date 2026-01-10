@@ -559,9 +559,8 @@ class NurseryConnectAPITester:
             success4, _ = self.run_test(
                 "Update Payment Status",
                 "PUT",
-                f"payments/{self.payment_id}/status",
+                f"payments/{self.payment_id}/status?status=paid",
                 200,
-                data={"status": "paid"},
                 token=self.parent_token
             )
         
