@@ -10,6 +10,7 @@ import { format } from 'date-fns';
 import { useTranslation } from 'react-i18next';
 
 export default function ParentDashboard({ user, onLogout }) {
+  const { t } = useTranslation();
   const [children, setChildren] = useState([]);
   const [selectedChild, setSelectedChild] = useState(null);
   const [activities, setActivities] = useState([]);
