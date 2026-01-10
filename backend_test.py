@@ -282,9 +282,8 @@ class NurseryConnectAPITester:
             success2, _ = self.run_test(
                 "Update Check-out",
                 "PUT",
-                f"attendance/{attendance_id}",
+                f"attendance/{attendance_id}?check_out=16:00",
                 200,
-                data={"check_out": "16:00"},
                 token=self.worker_token
             )
         
