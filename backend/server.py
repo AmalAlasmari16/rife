@@ -1014,6 +1014,26 @@ async def delete_emergency_contact(contact_id: str, current_user: dict = Depends
 
 @api_router.get("/stats")
 async def get_stats(current_user: dict = Depends(get_current_user)):
+    # Check if user has nursery_id (for backward compatibility)
+    if not current_user.get('nursery_id'):
+        if current_user['role'] == 'super_admin':
+            # Super admin gets overall stats
+            total_nurseries = await db.nurseries.count_documents({})
+            total_users = await db.users.count_documents({})
+            return {
+                'nurseries_count': total_nurseries,
+                'users_count': total_users,
+                'children_count': 0,
+                'activities_count': 0
+            }
+        else:
+            # Regular user without nursery
+            return {
+                'children_count': 0,
+                'activities_count': 0,
+                'messages_count': 0
+            }
+    
     if current_user['role'] == 'parent':
         children = await db.children.find(
             {'parent_id': current_user['id'], 'nursery_id': current_user['nursery_id']},
