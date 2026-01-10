@@ -1,0 +1,168 @@
+{
+  "identity": {
+    "name": "NurseryConnect",
+    "persona": "E1 - The Anti-AI Designer",
+    "tone": "Trustworthy, Warm, Playful, Organized",
+    "archetype": "Archetype 3: Pastel & Soft (Approachability, Ease)"
+  },
+  "typography": {
+    "font_family": {
+      "headings": "Nunito, sans-serif",
+      "body": "Manrope, sans-serif",
+      "mono": "JetBrains Mono, monospace"
+    },
+    "weights": {
+      "headings": "700",
+      "body": "400",
+      "bold": "600"
+    },
+    "sizes": {
+      "h1": "text-4xl md:text-5xl tracking-tight",
+      "h2": "text-3xl md:text-4xl tracking-tight",
+      "h3": "text-2xl font-bold",
+      "body": "text-base leading-relaxed",
+      "small": "text-sm text-muted-foreground"
+    },
+    "instructions": "Import fonts via Google Fonts in index.css. Use Nunito for all Headings (h1-h3) and Manrope for body text. Avoid Inter."
+  },
+  "colors": {
+    "theme": "light",
+    "palette": {
+      "light": {
+        "background": "40 20% 99%",
+        "foreground": "220 20% 20%",
+        "card": "0 0% 100%",
+        "card-foreground": "220 20% 20%",
+        "popover": "0 0% 100%",
+        "popover-foreground": "220 20% 20%",
+        "primary": "160 84% 39%",
+        "primary-foreground": "0 0% 100%",
+        "secondary": "45 90% 96%",
+        "secondary-foreground": "45 90% 35%",
+        "muted": "220 14% 96%",
+        "muted-foreground": "220 10% 45%",
+        "accent": "10 80% 96%",
+        "accent-foreground": "10 80% 40%",
+        "destructive": "0 84% 60%",
+        "destructive-foreground": "0 0% 98%",
+        "border": "220 13% 91%",
+        "input": "220 13% 91%",
+        "ring": "160 84% 39%",
+        "radius": "1rem"
+      },
+      "dark": {
+        "background": "220 20% 10%",
+        "foreground": "40 20% 99%",
+        "card": "220 20% 12%",
+        "card-foreground": "40 20% 99%",
+        "popover": "220 20% 12%",
+        "popover-foreground": "40 20% 99%",
+        "primary": "160 60% 45%",
+        "primary-foreground": "0 0% 100%",
+        "secondary": "220 20% 16%",
+        "secondary-foreground": "40 20% 99%",
+        "muted": "220 20% 16%",
+        "muted-foreground": "220 10% 65%",
+        "accent": "10 60% 20%",
+        "accent-foreground": "10 80% 90%",
+        "destructive": "0 62% 30%",
+        "destructive-foreground": "0 0% 98%",
+        "border": "220 20% 20%",
+        "input": "220 20% 20%",
+        "ring": "160 60% 45%"
+      }
+    },
+    "usage": "Use 'bg-background' for main page backgrounds (creamy white). Use 'bg-card' for containers. Use 'text-primary' for key actions and active states. Use 'bg-secondary' for playful highlights (yellow tint). Use 'bg-accent' for urgent or attention-grabbing elements (coral tint)."
+  },
+  "layout": {
+    "spacing": {
+      "container_padding": "p-4 md:p-8 lg:p-12",
+      "section_gap": "gap-8 md:gap-12",
+      "internal_padding": "p-6"
+    },
+    "grids": {
+      "dashboard_parent": "grid grid-cols-1 md:grid-cols-12 gap-6",
+      "dashboard_worker": "grid grid-cols-1 md:grid-cols-4 gap-4",
+      "bento_hero": "col-span-full md:col-span-8 row-span-2",
+      "bento_sidebar": "col-span-full md:col-span-4 row-span-2"
+    },
+    "radius": {
+      "default": "rounded-2xl",
+      "card": "rounded-3xl",
+      "button": "rounded-full"
+    }
+  },
+  "components": {
+    "buttons": {
+      "style": "rounded-full font-bold tracking-wide transition-transform hover:scale-105 active:scale-95",
+      "variants": {
+        "primary": "bg-primary text-primary-foreground shadow-lg shadow-primary/20 hover:bg-primary/90",
+        "secondary": "bg-secondary text-secondary-foreground hover:bg-secondary/80",
+        "ghost": "hover:bg-accent hover:text-accent-foreground"
+      }
+    },
+    "cards": {
+      "style": "bg-card text-card-foreground rounded-3xl border border-border/50 shadow-sm hover:shadow-md transition-shadow duration-300",
+      "padding": "p-6"
+    },
+    "inputs": {
+      "style": "rounded-xl border-border bg-white/50 focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
+    },
+    "navigation": {
+      "mobile": "Fixed bottom bar, glassmorphism (backdrop-blur-xl bg-white/80), rounded-t-3xl shadow-[0_-4px_20px_rgba(0,0,0,0.05)]",
+      "desktop": "Sidebar or Topbar with pill-shaped active states"
+    }
+  },
+  "visual_enhancers": {
+    "glassmorphism": "backdrop-blur-xl bg-white/70 border border-white/20 shadow-sm",
+    "gradients": "Avoid full-screen gradients. Use subtle mesh gradients in hero sections: 'bg-gradient-to-br from-secondary/30 via-background to-accent/20'",
+    "shadows": "Soft, diffuse shadows: 'shadow-[0_8px_30px_rgb(0,0,0,0.04)]'",
+    "textures": "Use subtle noise texture on backgrounds if possible to reduce digital flatness."
+  },
+  "motion": {
+    "hover": "transition-all duration-300 ease-out hover:-translate-y-1",
+    "click": "active:scale-95",
+    "page_transition": "animate-in fade-in slide-in-from-bottom-4 duration-500",
+    "list_stagger": "stagger-children"
+  },
+  "images": {
+    "hero_child": {
+      "url": "https://images.pexels.com/photos/3933250/pexels-photo-3933250.jpeg",
+      "alt": "Happy toddler playing with blocks",
+      "usage": "Parent Dashboard Hero / Landing Page"
+    },
+    "teacher_reading": {
+      "url": "https://images.pexels.com/photos/8535177/pexels-photo-8535177.jpeg",
+      "alt": "Nursery teacher reading to children",
+      "usage": "Worker Dashboard / About Section"
+    },
+    "meal_time": {
+      "url": "https://images.pexels.com/photos/5852271/pexels-photo-5852271.jpeg",
+      "alt": "Healthy toddler meal",
+      "usage": "Meal Plan / Menu Widget"
+    },
+    "activity_art": {
+      "url": "https://images.pexels.com/photos/3933107/pexels-photo-3933107.jpeg",
+      "alt": "Child playing with colorful toys",
+      "usage": "Activity Log / Gallery"
+    }
+  },
+  "icons": {
+    "library": "lucide-react",
+    "style": "Stroke width 2px, rounded caps. Use 'text-primary' for active icons."
+  },
+  "accessibility": {
+    "contrast": "Ensure text is at least 4.5:1 against background. Use 'text-foreground' (dark slate) on light backgrounds.",
+    "focus": "Visible focus rings 'ring-2 ring-primary ring-offset-2'",
+    "labels": "All inputs must have aria-labels or visible labels."
+  },
+  "universal_guidelines": [
+    "Do not use 'Inter' font.",
+    "Do not use default Shadcn radius (use rounded-2xl or 3xl).",
+    "Do not use pure black (#000000).",
+    "Always add data-testid to interactive elements.",
+    "Use 'sonner' for toasts.",
+    "Components must use named exports.",
+    "Pages must use default exports."
+  ]
+}
