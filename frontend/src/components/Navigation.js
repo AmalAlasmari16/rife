@@ -1,5 +1,6 @@
 import { Home, MessageCircle, Calendar, FileText, Phone, DollarSign, User } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { LanguageSwitcher } from './LanguageSwitcher';
 
 export default function Navigation({ user, onLogout, activePage }) {
   const navigate = useNavigate();
