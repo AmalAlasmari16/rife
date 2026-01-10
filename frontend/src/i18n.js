@@ -4,6 +4,9 @@ import { initReactI18next } from 'react-i18next';
 const resources = {
   en: {
     translation: {
+      // App Name
+      "appName": "رِفق",
+      
       // Navigation
       "home": "Home",
       "messages": "Messages",
