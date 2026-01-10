@@ -72,7 +72,7 @@ export default function Navigation({ user, onLogout, activePage }) {
       <div className="hidden md:block fixed top-0 left-0 right-0 glassmorphism border-b border-border/50 shadow-sm z-50" data-testid="desktop-navigation">
         <div className="max-w-7xl mx-auto px-8 py-4">
           <div className="flex items-center justify-between">
-            <h2 className="text-2xl font-bold text-primary" style={{ fontFamily: 'Nunito, Cairo, Tajawal, sans-serif' }}>{t('appName')}</h2>
+            <Logo size="md" showText={true} />
             <div className="flex items-center gap-2">
               {navItems.map((item) => {
                 const Icon = item.icon;
