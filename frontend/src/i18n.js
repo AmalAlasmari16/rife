@@ -20,7 +20,7 @@ const resources = {
       "logout": "Logout",
       
       // Login Page
-      "nurseryConnect": "NurseryConnect",
+      "nurseryConnect": "رِفق",
       "connectWithNursery": "Connect with your child's nursery",
       "login": "Login",
       "register": "Register",
