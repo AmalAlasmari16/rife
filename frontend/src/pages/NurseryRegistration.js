@@ -40,11 +40,11 @@ export default function NurseryRegistration() {
     <div className="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-secondary/30 via-background to-accent/20">
       <Card className="w-full max-w-2xl rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border-border/50" data-testid="nursery-registration-card">
         <CardHeader className="text-center">
-          <CardTitle className="text-3xl md:text-4xl font-bold tracking-tight text-primary mb-2">
+          <CardTitle className="text-3xl md:text-4xl font-bold tracking-tight text-primary mb-2" style={{ fontFamily: 'Nunito, Cairo, Tajawal, sans-serif' }}>
             Register Your Nursery
           </CardTitle>
           <CardDescription className="text-base">
-            Join NurseryConnect and start managing your nursery digitally
+            Join رِفق and start managing your nursery digitally
           </CardDescription>
         </CardHeader>
         <CardContent>
