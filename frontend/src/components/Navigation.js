@@ -89,6 +89,7 @@ export default function Navigation({ user, onLogout, activePage }) {
                   </button>
                 );
               })}
+              <LanguageSwitcher />
               <button
                 onClick={onLogout}
                 className="flex items-center gap-2 px-4 py-2 rounded-full transition-all font-medium bg-destructive text-destructive-foreground hover:bg-destructive/90 ml-2"
