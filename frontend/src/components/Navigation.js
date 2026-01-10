@@ -31,7 +31,7 @@ export default function Navigation({ user, onLogout, activePage }) {
       {/* Mobile Bottom Navigation */}
       <div className="fixed bottom-0 left-0 right-0 md:hidden glassmorphism border-t border-border/50 rounded-t-3xl shadow-[0_-4px_20px_rgba(0,0,0,0.05)] z-50" data-testid="mobile-navigation">
         <div className="flex items-center justify-around p-3">
-          {navItems.slice(0, 5).map((item) => {
+          {navItems.slice(0, 4).map((item) => {
             const Icon = item.icon;
             const isActive = activePage === item.page;
             return (
@@ -48,6 +48,18 @@ export default function Navigation({ user, onLogout, activePage }) {
               </button>
             );
           })}
+          <button
+            onClick={onLogout}
+            className="flex flex-col items-center gap-1 p-2 rounded-2xl transition-all text-destructive"
+            data-testid="mobile-logout-button"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5">
+              <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+              <polyline points="16 17 21 12 16 7"></polyline>
+              <line x1="21" y1="12" x2="9" y2="12"></line>
+            </svg>
+            <span className="text-xs font-medium">Logout</span>
+          </button>
         </div>
       </div>
 
