@@ -2,6 +2,7 @@ import { Home, MessageCircle, Calendar, FileText, Phone, DollarSign, User } from
 import { useNavigate } from 'react-router-dom';
 import { LanguageSwitcher } from './LanguageSwitcher';
 import { useTranslation } from 'react-i18next';
+import Logo from './Logo';
 
 export default function Navigation({ user, onLogout, activePage }) {
   const navigate = useNavigate();
