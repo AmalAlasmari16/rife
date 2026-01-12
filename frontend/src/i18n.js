@@ -11,6 +11,7 @@ const resources = {
       "home": "Home",
       "messages": "Messages",
       "calendar": "Calendar",
+      "events": "Events",
       "files": "Files",
       "emergency": "Emergency",
       "contacts": "Contacts",
@@ -41,6 +42,8 @@ const resources = {
       "welcomeName": "Welcome, {{name}}",
       "happeningToday": "Here's what's happening with your children today",
       "manageActivities": "Manage children and daily activities",
+      "workerDashboard": "Worker Dashboard",
+      "parentDashboard": "Parent Dashboard",
       "children": "Children",
       "activities": "Activities",
       "activitiesLogged": "Activities Logged",
@@ -168,6 +171,10 @@ const resources = {
       "accountInformation": "Account Information",
       "accountActions": "Account Actions",
       
+      // Registration
+      "registerYourNursery": "Register your nursery",
+      "alreadyRegistered": "Already registered? Login here",
+      
       // Common
       "submit": "Submit",
       "cancel": "Cancel",
@@ -180,7 +187,8 @@ const resources = {
       "error": "Error",
       "success": "Success",
       "confirm": "Confirm",
-      "by": "by"
+      "by": "by",
+      "send": "Send"
     }
   },
   ar: {
@@ -192,17 +200,18 @@ const resources = {
       "home": "الرئيسية",
       "messages": "الرسائل",
       "calendar": "التقويم",
+      "events": "الفعاليات",
       "files": "الملفات",
       "emergency": "الطوارئ",
       "contacts": "جهات الاتصال",
       "payments": "المدفوعات",
-      "billing": "الفواتير",
+      "billing": "الفوترة",
       "profile": "الملف الشخصي",
       "logout": "تسجيل الخروج",
       
       // Login Page
       "nurseryConnect": "رِفق",
-      "connectWithNursery": "توصَّل مع حضانة طفلك",
+      "connectWithNursery": "تواصل مع حضانة طفلك",
       "login": "تسجيل الدخول",
       "register": "التسجيل",
       "email": "البريد الإلكتروني",
@@ -211,17 +220,19 @@ const resources = {
       "phone": "الهاتف",
       "role": "الدور",
       "parent": "ولي أمر",
-      "nurseryWorker": "عامل الحضانة",
+      "nurseryWorker": "موظف حضانة",
       "signIn": "تسجيل الدخول",
-      "signingIn": "جاري تسجيل الدخول...",
+      "signingIn": "جارٍ تسجيل الدخول...",
       "createAccount": "إنشاء حساب",
-      "creatingAccount": "جاري إنشاء الحساب...",
+      "creatingAccount": "جارٍ إنشاء الحساب...",
       
       // Dashboard
-      "welcomeBack": "مرحباً بعودتك!",
-      "welcomeName": "مرحباً، {{name}}",
+      "welcomeBack": "مرحبًا بعودتك!",
+      "welcomeName": "مرحبًا، {{name}}",
       "happeningToday": "إليك ما يحدث مع أطفالك اليوم",
       "manageActivities": "إدارة الأطفال والأنشطة اليومية",
+      "workerDashboard": "لوحة تحكم الموظف",
+      "parentDashboard": "لوحة تحكم ولي الأمر",
       "children": "الأطفال",
       "activities": "الأنشطة",
       "activitiesLogged": "الأنشطة المسجلة",
@@ -243,9 +254,9 @@ const resources = {
       // Activities
       "logActivity": "تسجيل نشاط",
       "logAttendance": "تسجيل الحضور",
-      "logMeal": "تسجيل وجبة",
+      "logMeal": "تسجيل الوجبة",
       "child": "الطفل",
-      "selectChild": "اختر طفلاً",
+      "selectChild": "اختر طفلًا",
       "activityType": "نوع النشاط",
       "play": "لعب",
       "learning": "تعلم",
@@ -266,7 +277,7 @@ const resources = {
       "noActivitiesYet": "لا توجد أنشطة بعد",
       
       // Messages
-      "stayConnected": "ابق على تواصل مع الآباء والموظفين",
+      "stayConnected": "ابقَ على تواصل مع أولياء الأمور والموظفين",
       "newGroup": "مجموعة جديدة",
       "groups": "المجموعات",
       "members": "أعضاء",
@@ -289,22 +300,22 @@ const resources = {
       "time": "الوقت",
       "timeOptional": "الوقت (اختياري)",
       "noEventsScheduled": "لا توجد فعاليات مجدولة",
-      "checkBackLater": "تحقق لاحقاً للفعاليات القادمة",
+      "checkBackLater": "تحقق لاحقًا للفعاليات القادمة",
       "createFirstEvent": "أنشئ أول فعالية للبدء",
       "addEvent": "أضف فعالية أو إعلان جديد",
       
       // Files
       "fileLibrary": "مكتبة الملفات",
-      "documentsReports": "المستندات والتقارير والملفات المشتركة",
+      "documentsReports": "المستندات، التقارير، والملفات المشتركة",
       "uploadFile": "رفع ملف",
-      "shareDocuments": "شارك المستندات مع الآباء والموظفين",
+      "shareDocuments": "شارك المستندات مع أولياء الأمور والموظفين",
       "file": "ملف",
       "category": "الفئة",
       "general": "عام",
       "report": "تقرير",
       "medical": "طبي",
       "policy": "سياسة",
-      "uploading": "جاري الرفع...",
+      "uploading": "جارٍ الرفع...",
       "noFilesUploaded": "لا توجد ملفات مرفوعة",
       "uploadFirstDocument": "ارفع أول مستند للبدء",
       "uploaded": "تم الرفع",
@@ -325,7 +336,7 @@ const resources = {
       "noChildrenFound": "لا يوجد أطفال",
       
       // Payments
-      "paymentsBilling": "المدفوعات والفواتير",
+      "paymentsBilling": "المدفوعات والفوترة",
       "trackNurseryFees": "تتبع رسوم الحضانة والمدفوعات",
       "newPayment": "دفعة جديدة",
       "createPaymentRecord": "إنشاء سجل دفع",
@@ -349,6 +360,10 @@ const resources = {
       "accountInformation": "معلومات الحساب",
       "accountActions": "إجراءات الحساب",
       
+      // Registration
+      "registerYourNursery": "سجّل حضانتك",
+      "alreadyRegistered": "مسجّل بالفعل؟ سجّل الدخول من هنا",
+      
       // Common
       "submit": "إرسال",
       "cancel": "إلغاء",
@@ -357,11 +372,12 @@ const resources = {
       "save": "حفظ",
       "close": "إغلاق",
       "search": "بحث",
-      "loading": "جاري التحميل...",
+      "loading": "جارٍ التحميل...",
       "error": "خطأ",
       "success": "نجاح",
       "confirm": "تأكيد",
-      "by": "بواسطة"
+      "by": "بواسطة",
+      "send": "إرسال"
     }
   }
 };
