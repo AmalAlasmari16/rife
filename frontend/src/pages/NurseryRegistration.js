@@ -8,6 +8,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../co
 import { toast } from 'sonner';
 import { Building2, Mail, User, Phone, MapPin, Lock } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { LanguageSwitcher } from '../components/LanguageSwitcher';
 
 export default function NurseryRegistration() {
   const navigate = useNavigate();
