@@ -9,23 +9,23 @@ export default function Navigation({ user, onLogout, activePage }) {
   const { t } = useTranslation();
 
   const parentNav = [
-    { icon: Home, label: 'Home', path: '/parent', page: 'dashboard' },
-    { icon: MessageCircle, label: 'Messages', path: '/messages', page: 'messages' },
-    { icon: Calendar, label: 'Calendar', path: '/calendar', page: 'calendar' },
-    { icon: FileText, label: 'Files', path: '/files', page: 'files' },
-    { icon: Phone, label: 'Emergency', path: '/emergency-contacts', page: 'emergency' },
-    { icon: DollarSign, label: 'Payments', path: '/payments', page: 'payments' },
-    { icon: User, label: 'Profile', path: '/profile', page: 'profile' },
+    { icon: Home, label: t('home'), path: '/parent', page: 'dashboard' },
+    { icon: MessageCircle, label: t('messages'), path: '/messages', page: 'messages' },
+    { icon: Calendar, label: t('calendar'), path: '/calendar', page: 'calendar' },
+    { icon: FileText, label: t('files'), path: '/files', page: 'files' },
+    { icon: Phone, label: t('emergency'), path: '/emergency-contacts', page: 'emergency' },
+    { icon: DollarSign, label: t('payments'), path: '/payments', page: 'payments' },
+    { icon: User, label: t('profile'), path: '/profile', page: 'profile' },
   ];
 
   const workerNav = [
-    { icon: Home, label: 'Home', path: '/worker', page: 'dashboard' },
-    { icon: MessageCircle, label: 'Messages', path: '/messages', page: 'messages' },
-    { icon: Calendar, label: 'Events', path: '/calendar', page: 'calendar' },
-    { icon: FileText, label: 'Files', path: '/files', page: 'files' },
-    { icon: Phone, label: 'Contacts', path: '/emergency-contacts', page: 'emergency' },
-    { icon: DollarSign, label: 'Billing', path: '/payments', page: 'payments' },
-    { icon: User, label: 'Profile', path: '/profile', page: 'profile' },
+    { icon: Home, label: t('home'), path: '/worker', page: 'dashboard' },
+    { icon: MessageCircle, label: t('messages'), path: '/messages', page: 'messages' },
+    { icon: Calendar, label: t('events'), path: '/calendar', page: 'calendar' },
+    { icon: FileText, label: t('files'), path: '/files', page: 'files' },
+    { icon: Phone, label: t('contacts'), path: '/emergency-contacts', page: 'emergency' },
+    { icon: DollarSign, label: t('billing'), path: '/payments', page: 'payments' },
+    { icon: User, label: t('profile'), path: '/profile', page: 'profile' },
   ];
 
   const navItems = user.role === 'parent' ? parentNav : workerNav;
