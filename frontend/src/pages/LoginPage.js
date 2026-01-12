@@ -49,6 +49,11 @@ export default function LoginPage({ onLogin }) {
 
   return (
     <div className="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-secondary/30 via-background to-accent/20">
+      {/* Language Switcher - Top Right */}
+      <div className="fixed top-4 right-4 z-50">
+        <LanguageSwitcher />
+      </div>
+      
       <Card className="w-full max-w-md rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border-border/50" data-testid="login-card">
         <CardHeader className="space-y-1 text-center">
           <div className="flex justify-center mb-4">
