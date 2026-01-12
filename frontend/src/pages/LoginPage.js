@@ -9,6 +9,7 @@ import { toast } from 'sonner';
 import { User, Lock, Mail, Phone, Users } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import Logo from '../components/Logo';
+import { LanguageSwitcher } from '../components/LanguageSwitcher';
 
 export default function LoginPage({ onLogin }) {
   const { t } = useTranslation();
