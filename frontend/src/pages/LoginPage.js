@@ -69,14 +69,14 @@ export default function LoginPage({ onLogin }) {
         <CardContent>
           <Tabs value={isLogin ? 'login' : 'register'} onValueChange={(v) => setIsLogin(v === 'login')} className="w-full">
             <TabsList className="grid w-full grid-cols-2 mb-6 rounded-full">
-              <TabsTrigger value="login" className="rounded-full" data-testid="login-tab">Login</TabsTrigger>
-              <TabsTrigger value="register" className="rounded-full" data-testid="register-tab">Register</TabsTrigger>
+              <TabsTrigger value="login" className="rounded-full" data-testid="login-tab">{t('login')}</TabsTrigger>
+              <TabsTrigger value="register" className="rounded-full" data-testid="register-tab">{t('register')}</TabsTrigger>
             </TabsList>
             
             <TabsContent value="login">
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div className="space-y-2">
-                  <Label htmlFor="login-email">Email</Label>
+                  <Label htmlFor="login-email">{t('email')}</Label>
                   <div className="relative">
                     <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                     <Input
@@ -92,7 +92,7 @@ export default function LoginPage({ onLogin }) {
                   </div>
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="login-password">Password</Label>
+                  <Label htmlFor="login-password">{t('password')}</Label>
                   <div className="relative">
                     <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                     <Input
@@ -113,7 +113,7 @@ export default function LoginPage({ onLogin }) {
                   disabled={loading}
                   data-testid="login-submit-button"
                 >
-                  {loading ? 'Signing in...' : 'Sign In'}
+                  {loading ? t('signingIn') : t('signIn')}
                 </Button>
               </form>
             </TabsContent>
@@ -121,7 +121,7 @@ export default function LoginPage({ onLogin }) {
             <TabsContent value="register">
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div className="space-y-2">
-                  <Label htmlFor="register-name">Full Name</Label>
+                  <Label htmlFor="register-name">{t('fullName')}</Label>
                   <div className="relative">
                     <User className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                     <Input
@@ -137,7 +137,7 @@ export default function LoginPage({ onLogin }) {
                   </div>
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="register-email">Email</Label>
+                  <Label htmlFor="register-email">{t('email')}</Label>
                   <div className="relative">
                     <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                     <Input
@@ -153,7 +153,7 @@ export default function LoginPage({ onLogin }) {
                   </div>
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="register-phone">Phone</Label>
+                  <Label htmlFor="register-phone">{t('phone')}</Label>
                   <div className="relative">
                     <Phone className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                     <Input
@@ -168,7 +168,7 @@ export default function LoginPage({ onLogin }) {
                   </div>
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="register-password">Password</Label>
+                  <Label htmlFor="register-password">{t('password')}</Label>
                   <div className="relative">
                     <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                     <Input
@@ -184,7 +184,7 @@ export default function LoginPage({ onLogin }) {
                   </div>
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="register-role">Role</Label>
+                  <Label htmlFor="register-role">{t('role')}</Label>
                   <div className="relative">
                     <Users className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                     <select
@@ -194,8 +194,8 @@ export default function LoginPage({ onLogin }) {
                       className="flex h-10 w-full rounded-xl border border-input bg-white/50 px-3 py-2 pl-10 text-sm ring-offset-background focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
                       data-testid="register-role-select"
                     >
-                      <option value="parent">Parent</option>
-                      <option value="worker">Nursery Worker</option>
+                      <option value="parent">{t('parent')}</option>
+                      <option value="worker">{t('nurseryWorker')}</option>
                     </select>
                   </div>
                 </div>
@@ -205,7 +205,7 @@ export default function LoginPage({ onLogin }) {
                   disabled={loading}
                   data-testid="register-submit-button"
                 >
-                  {loading ? 'Creating account...' : 'Create Account'}
+                  {loading ? t('creatingAccount') : t('createAccount')}
                 </Button>
               </form>
             </TabsContent>
