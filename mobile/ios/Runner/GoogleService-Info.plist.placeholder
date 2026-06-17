@@ -1,0 +1,7 @@
+<!--
+PLACEHOLDER — replace with the real GoogleService-Info.plist downloaded from
+the Firebase console (Project settings → Your apps → iOS app).
+
+The real file MUST be saved as `ios/Runner/GoogleService-Info.plist`, added
+to the Runner target in Xcode, and is gitignored.
+-->

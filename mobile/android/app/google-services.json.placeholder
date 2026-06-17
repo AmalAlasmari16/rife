@@ -1,0 +1,6 @@
+// PLACEHOLDER — replace with the real google-services.json downloaded from
+// the Firebase console (Project settings → Your apps → Android app).
+//
+// The real file MUST be saved as `android/app/google-services.json` and is
+// gitignored. It is consumed at build time by the Google Services Gradle
+// plugin in `android/app/build.gradle`.
