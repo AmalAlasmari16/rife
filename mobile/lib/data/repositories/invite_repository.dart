@@ -1,7 +1,10 @@
+import 'dart:math';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '../../core/constants/firestore_paths.dart';
 import '../models/invite.dart';
+import '../models/user_role.dart';
 
 /// Invite codes live under `/nurseries/{nurseryId}/invites/{code}`. To
 /// support entering the code without first knowing the nursery, we mirror
@@ -51,5 +54,56 @@ class InviteRepository {
       'usedAt': FieldValue.serverTimestamp(),
       'redeemedBy': redeemedByUid,
     });
+  }
+
+  /// Issues a new invite. Writes the nested invite doc *and* a mirror in the
+  /// top-level [_lookupCollection] in a single batch so lookups stay
+  /// consistent. Returns the generated 6-character code.
+  Future<Invite> create({
+    required String nurseryId,
+    required UserRole role,
+    String? classroomId,
+    String? childId,
+    String? phone,
+  }) async {
+    final code = _generateCode();
+    final inviteRef =
+        _db.collection(FirestorePaths.invites(nurseryId)).doc(code);
+    final lookupRef = _db.collection(_lookupCollection).doc(code);
+
+    final invite = Invite(
+      code: code,
+      nurseryId: nurseryId,
+      role: role,
+      createdAt: DateTime.now(),
+      classroomId: classroomId,
+      childId: childId,
+      phone: phone,
+    );
+
+    final batch = _db.batch()
+      ..set(inviteRef, {
+        'nurseryId': nurseryId,
+        'role': role.toFirestore(),
+        'classroomId': classroomId,
+        'childId': childId,
+        'phone': phone,
+        'used': false,
+        'createdAt': FieldValue.serverTimestamp(),
+      })
+      ..set(lookupRef, {'nurseryId': nurseryId});
+    await batch.commit();
+
+    return invite;
+  }
+
+  /// 6-character alphanumeric, ambiguous chars (O, 0, I, 1) stripped.
+  String _generateCode() {
+    const alphabet = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+    final rng = Random.secure();
+    return List.generate(
+      6,
+      (_) => alphabet[rng.nextInt(alphabet.length)],
+    ).join();
   }
 }

@@ -10,7 +10,7 @@ import '../screens/auth/login_screen.dart';
 import '../screens/auth/phone_otp_screen.dart';
 import '../screens/auth/register_admin_screen.dart';
 import '../screens/auth/welcome_screen.dart';
-import '../screens/home/admin_home_placeholder.dart';
+import '../screens/admin/admin_shell.dart';
 import '../screens/home/parent_home_placeholder.dart';
 import '../screens/home/profile_missing_screen.dart';
 import '../screens/super_admin/super_admin_home_screen.dart';
@@ -155,7 +155,7 @@ final goRouterProvider = Provider<GoRouter>((ref) {
       ),
       GoRoute(
         path: Routes.adminHome,
-        builder: (_, __) => const AdminHomePlaceholder(),
+        builder: (_, __) => const AdminShell(),
       ),
       GoRoute(
         path: Routes.teacherHome,

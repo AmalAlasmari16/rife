@@ -3,6 +3,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../data/repositories/auth_repository.dart';
+import '../data/repositories/child_repository.dart';
+import '../data/repositories/classroom_repository.dart';
 import '../data/repositories/invite_repository.dart';
 import '../data/repositories/nursery_repository.dart';
 import '../data/repositories/platform_repository.dart';
@@ -34,4 +36,12 @@ final inviteRepositoryProvider = Provider<InviteRepository>(
 
 final platformRepositoryProvider = Provider<PlatformRepository>(
   (ref) => PlatformRepository(ref.watch(firestoreProvider)),
+);
+
+final classroomRepositoryProvider = Provider<ClassroomRepository>(
+  (ref) => ClassroomRepository(ref.watch(firestoreProvider)),
+);
+
+final childRepositoryProvider = Provider<ChildRepository>(
+  (ref) => ChildRepository(ref.watch(firestoreProvider)),
 );

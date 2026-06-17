@@ -47,4 +47,24 @@ class UserRepository {
       'role': UserRole.parent.toFirestore(),
     }, SetOptions(merge: true));
   }
+
+  /// Streams all staff (teachers) belonging to a nursery.
+  Stream<List<AppUser>> watchStaff(String nurseryId) {
+    return _db
+        .collection(FirestorePaths.users)
+        .where('nurseryId', isEqualTo: nurseryId)
+        .where('role', isEqualTo: UserRole.teacher.toFirestore())
+        .snapshots()
+        .map((s) => s.docs.map(AppUser.fromFirestore).toList());
+  }
+
+  /// Streams all parents belonging to a nursery.
+  Stream<List<AppUser>> watchParents(String nurseryId) {
+    return _db
+        .collection(FirestorePaths.users)
+        .where('nurseryId', isEqualTo: nurseryId)
+        .where('role', isEqualTo: UserRole.parent.toFirestore())
+        .snapshots()
+        .map((s) => s.docs.map(AppUser.fromFirestore).toList());
+  }
 }
