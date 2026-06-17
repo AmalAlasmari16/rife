@@ -19,7 +19,7 @@ prototype in `../frontend` is kept for reference only.
 | 3 | Subscription system (plans, paywall)        | ✅ done     |
 | 4 | Super-admin dashboard                       | ✅ done     |
 | 5 | Nursery admin (children, classrooms, staff) | ✅ done     |
-| 6 | Teacher (attendance, daily log, AI report)  | ⏳ pending  |
+| 6 | Teacher (attendance, daily log, AI report)  | ✅ done     |
 | 7 | Parent (dashboard, reports, messaging)      | ⏳ pending  |
 | 8 | QR check-in / check-out                     | ⏳ pending  |
 | 9 | Billing module                              | ⏳ pending  |

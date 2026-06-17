@@ -6,3 +6,4 @@ export 'nursery_data_providers.dart';
 export 'platform_providers.dart';
 export 'repository_providers.dart';
 export 'subscription_providers.dart';
+export 'teacher_providers.dart';

@@ -2,13 +2,16 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../data/repositories/attendance_repository.dart';
 import '../data/repositories/auth_repository.dart';
 import '../data/repositories/child_repository.dart';
 import '../data/repositories/classroom_repository.dart';
+import '../data/repositories/daily_log_repository.dart';
 import '../data/repositories/invite_repository.dart';
 import '../data/repositories/nursery_repository.dart';
 import '../data/repositories/platform_repository.dart';
 import '../data/repositories/user_repository.dart';
+import '../data/services/gemini_service.dart';
 
 final firebaseAuthProvider = Provider<FirebaseAuth>(
   (ref) => FirebaseAuth.instance,
@@ -44,4 +47,16 @@ final classroomRepositoryProvider = Provider<ClassroomRepository>(
 
 final childRepositoryProvider = Provider<ChildRepository>(
   (ref) => ChildRepository(ref.watch(firestoreProvider)),
+);
+
+final attendanceRepositoryProvider = Provider<AttendanceRepository>(
+  (ref) => AttendanceRepository(ref.watch(firestoreProvider)),
+);
+
+final dailyLogRepositoryProvider = Provider<DailyLogRepository>(
+  (ref) => DailyLogRepository(ref.watch(firestoreProvider)),
+);
+
+final geminiServiceProvider = Provider<GeminiService>(
+  (ref) => GeminiService(),
 );
