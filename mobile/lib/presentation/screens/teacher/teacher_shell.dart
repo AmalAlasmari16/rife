@@ -6,6 +6,7 @@ import '../../../providers/auth_providers.dart';
 import '../../../providers/repository_providers.dart';
 import '../../router/routes.dart';
 import '../subscription/widgets/trial_banner.dart';
+import 'check_in_screen.dart';
 import 'today_tab.dart';
 
 class TeacherShell extends ConsumerStatefulWidget {
@@ -21,16 +22,12 @@ class _TeacherShellState extends ConsumerState<TeacherShell> {
   Widget _body() {
     switch (_index) {
       case 1:
-        return const _ComingSoon(
-          icon: Icons.photo_library_outlined,
-          title: 'الصور',
-          subtitle: 'رفع صور الأنشطة يُبنى لاحقاً في هذه المرحلة.',
-        );
+        return const CheckInScreen();
       case 2:
         return const _ComingSoon(
           icon: Icons.forum_outlined,
           title: 'الرسائل',
-          subtitle: 'المحادثات مع الأهالي تُبنى في المرحلة 7.',
+          subtitle: 'افتح المحادثات من شاشة الطفل.',
         );
       case 0:
       default:
@@ -56,12 +53,14 @@ class _TeacherShellState extends ConsumerState<TeacherShell> {
           ),
         ],
       ),
-      body: Column(
-        children: [
-          const TrialBanner(),
-          Expanded(child: _body()),
-        ],
-      ),
+      body: _index == 1
+          ? _body()
+          : Column(
+              children: [
+                const TrialBanner(),
+                Expanded(child: _body()),
+              ],
+            ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _index,
         onTap: (i) => setState(() => _index = i),
@@ -71,8 +70,8 @@ class _TeacherShellState extends ConsumerState<TeacherShell> {
             label: 'الحضور',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.photo_library_outlined),
-            label: 'الصور',
+            icon: Icon(Icons.qr_code_scanner_outlined),
+            label: 'الباب',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.forum_outlined),

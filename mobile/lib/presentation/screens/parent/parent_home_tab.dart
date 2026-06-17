@@ -8,6 +8,7 @@ import '../../../data/models/daily_log.dart';
 import '../../../providers/auth_providers.dart';
 import '../../../providers/parent_providers.dart';
 import '../../../providers/teacher_providers.dart';
+import '../../widgets/child_qr_card.dart';
 import '../../widgets/loading_view.dart';
 
 class ParentHomeTab extends ConsumerWidget {
@@ -149,6 +150,16 @@ class ParentHomeTab extends ConsumerWidget {
                 return _TodaysReport(log: log);
               },
             ),
+            const SizedBox(height: 16),
+            Builder(builder: (context) {
+              final user = ref.watch(currentUserProvider).valueOrNull;
+              if (user?.nurseryId == null) return const SizedBox.shrink();
+              return ChildQrCard(
+                nurseryId: user!.nurseryId!,
+                childId: selected.id,
+                childName: selected.name,
+              );
+            }),
           ],
         ],
       ),
