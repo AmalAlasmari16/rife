@@ -22,6 +22,8 @@ class FirestorePaths {
   static String announcements(String nurseryId) =>
       '${nursery(nurseryId)}/announcements';
   static String invites(String nurseryId) => '${nursery(nurseryId)}/invites';
+  static String enrollments(String nurseryId) =>
+      '${nursery(nurseryId)}/enrollments';
   static String dailyLogs(String nurseryId, String childId) =>
       '${nursery(nurseryId)}/children/$childId/dailyLogs';
   static String attendance(String nurseryId) =>

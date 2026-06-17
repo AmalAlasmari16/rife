@@ -12,6 +12,8 @@ import '../screens/auth/register_admin_screen.dart';
 import '../screens/auth/welcome_screen.dart';
 import '../screens/admin/admin_shell.dart';
 import '../screens/admin/billing_screen.dart';
+import '../screens/admin/waitlist_screen.dart';
+import '../screens/enrollment/public_enrollment_screen.dart';
 import '../screens/parent/invoices_screen.dart';
 import '../screens/parent/parent_shell.dart';
 import '../screens/home/profile_missing_screen.dart';
@@ -58,6 +60,7 @@ final goRouterProvider = Provider<GoRouter>((ref) {
         Routes.inviteCode,
         Routes.phoneOtp,
         Routes.splash,
+        Routes.publicEnrollment,
       };
       final isOnAuthRoute = authRoutes.contains(location);
 
@@ -190,6 +193,14 @@ final goRouterProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: Routes.parentInvoices,
         builder: (_, __) => const ParentInvoicesScreen(),
+      ),
+      GoRoute(
+        path: Routes.publicEnrollment,
+        builder: (_, __) => const PublicEnrollmentScreen(),
+      ),
+      GoRoute(
+        path: Routes.adminWaitlist,
+        builder: (_, __) => const WaitlistScreen(),
       ),
     ],
   );

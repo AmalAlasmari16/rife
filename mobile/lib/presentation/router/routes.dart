@@ -24,6 +24,10 @@ class Routes {
   static const billing = '/admin/billing';
   static const parentInvoices = '/parent/invoices';
 
+  // Enrollment
+  static const publicEnrollment = '/enroll';
+  static const adminWaitlist = '/admin/waitlist';
+
   /// Catch-all shown when the signed-in user has no Firestore profile yet.
   static const profileMissing = '/profile-missing';
 }

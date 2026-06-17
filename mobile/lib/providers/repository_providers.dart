@@ -9,6 +9,7 @@ import '../data/repositories/auth_repository.dart';
 import '../data/repositories/child_repository.dart';
 import '../data/repositories/classroom_repository.dart';
 import '../data/repositories/daily_log_repository.dart';
+import '../data/repositories/enrollment_repository.dart';
 import '../data/repositories/invite_repository.dart';
 import '../data/repositories/invoice_repository.dart';
 import '../data/repositories/messaging_repository.dart';
@@ -72,6 +73,10 @@ final messagingRepositoryProvider = Provider<MessagingRepository>(
 
 final invoiceRepositoryProvider = Provider<InvoiceRepository>(
   (ref) => InvoiceRepository(ref.watch(firestoreProvider)),
+);
+
+final enrollmentRepositoryProvider = Provider<EnrollmentRepository>(
+  (ref) => EnrollmentRepository(ref.watch(firestoreProvider)),
 );
 
 final firebaseMessagingProvider = Provider<FirebaseMessaging>(

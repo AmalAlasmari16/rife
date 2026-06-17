@@ -57,7 +57,13 @@ class WelcomeScreen extends StatelessWidget {
                 onPressed: () => context.push(Routes.inviteCode),
                 child: const Text('لدي رمز دعوة'),
               ),
-              const SizedBox(height: 24),
+              const SizedBox(height: 12),
+              TextButton(
+                style: TextButton.styleFrom(foregroundColor: Colors.white),
+                onPressed: () => context.push(Routes.publicEnrollment),
+                child: const Text('تقديم طلب التحاق طفل'),
+              ),
+              const SizedBox(height: 12),
               Center(
                 child: TextButton(
                   style: TextButton.styleFrom(foregroundColor: Colors.white),
