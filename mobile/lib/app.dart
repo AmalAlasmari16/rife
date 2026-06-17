@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'core/constants/app_constants.dart';
 import 'core/theme/app_theme.dart';
 import 'presentation/router/app_router.dart';
+import 'providers/auth_providers.dart';
 
 class RifqApp extends ConsumerWidget {
   const RifqApp({super.key});
@@ -12,6 +13,8 @@ class RifqApp extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final router = ref.watch(goRouterProvider);
+    // Keeps the push-notification subscription alive for the session.
+    ref.watch(pushBootstrapProvider);
     return MaterialApp.router(
       title: AppConstants.appNameAr,
       debugShowCheckedModeBanner: false,

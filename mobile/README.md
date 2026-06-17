@@ -23,7 +23,7 @@ prototype in `../frontend` is kept for reference only.
 | 7 | Parent (dashboard, reports, messaging)      | ✅ done     |
 | 8 | QR check-in / check-out                     | ✅ done     |
 | 9 | Billing module                              | ✅ done     |
-|10 | Push notifications                          | ⏳ pending  |
+|10 | Push notifications                          | ✅ done     |
 |11 | Digital enrollment                          | ⏳ pending  |
 
 ---

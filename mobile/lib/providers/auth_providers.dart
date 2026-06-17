@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../data/models/app_user.dart';
+import '../data/services/notification_service.dart';
 import 'repository_providers.dart';
 
 /// Streams the raw Firebase Auth user — null when signed out.
@@ -24,4 +25,20 @@ final currentUserProvider = StreamProvider<AppUser?>((ref) async* {
     return;
   }
   yield* ref.watch(userRepositoryProvider).watch(firebaseUser.uid);
+});
+
+/// Side-effect provider that wires the [NotificationService] to the
+/// current Firebase Auth user, attaching on sign-in and detaching on
+/// sign-out. The app reads it once from `main`-level Consumer so it runs
+/// for the lifetime of the session.
+final pushBootstrapProvider = Provider<void>((ref) {
+  final service = ref.watch(notificationServiceProvider);
+  ref.listen<AsyncValue<User?>>(authStateProvider, (_, next) {
+    final uid = next.valueOrNull?.uid;
+    if (uid == null) {
+      service.detach();
+    } else {
+      service.attach(uid);
+    }
+  }, fireImmediately: true);
 });

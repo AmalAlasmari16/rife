@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../data/repositories/attendance_repository.dart';
@@ -14,6 +16,7 @@ import '../data/repositories/nursery_repository.dart';
 import '../data/repositories/platform_repository.dart';
 import '../data/repositories/user_repository.dart';
 import '../data/services/gemini_service.dart';
+import '../data/services/notification_service.dart';
 
 final firebaseAuthProvider = Provider<FirebaseAuth>(
   (ref) => FirebaseAuth.instance,
@@ -69,4 +72,21 @@ final messagingRepositoryProvider = Provider<MessagingRepository>(
 
 final invoiceRepositoryProvider = Provider<InvoiceRepository>(
   (ref) => InvoiceRepository(ref.watch(firestoreProvider)),
+);
+
+final firebaseMessagingProvider = Provider<FirebaseMessaging>(
+  (ref) => FirebaseMessaging.instance,
+);
+
+final localNotificationsProvider =
+    Provider<FlutterLocalNotificationsPlugin>(
+  (ref) => FlutterLocalNotificationsPlugin(),
+);
+
+final notificationServiceProvider = Provider<NotificationService>(
+  (ref) => NotificationService(
+    ref.watch(firebaseMessagingProvider),
+    ref.watch(firestoreProvider),
+    ref.watch(localNotificationsProvider),
+  ),
 );
