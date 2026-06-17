@@ -2,5 +2,6 @@
 library;
 
 export 'auth_providers.dart';
+export 'platform_providers.dart';
 export 'repository_providers.dart';
 export 'subscription_providers.dart';

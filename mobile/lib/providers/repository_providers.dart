@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../data/repositories/auth_repository.dart';
 import '../data/repositories/invite_repository.dart';
 import '../data/repositories/nursery_repository.dart';
+import '../data/repositories/platform_repository.dart';
 import '../data/repositories/user_repository.dart';
 
 final firebaseAuthProvider = Provider<FirebaseAuth>(
@@ -29,4 +30,8 @@ final nurseryRepositoryProvider = Provider<NurseryRepository>(
 
 final inviteRepositoryProvider = Provider<InviteRepository>(
   (ref) => InviteRepository(ref.watch(firestoreProvider)),
+);
+
+final platformRepositoryProvider = Provider<PlatformRepository>(
+  (ref) => PlatformRepository(ref.watch(firestoreProvider)),
 );
