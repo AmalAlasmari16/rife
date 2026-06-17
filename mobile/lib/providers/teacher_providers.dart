@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../data/models/attendance.dart';
 import '../data/models/child.dart';
 import '../data/models/daily_log.dart';
+import '../data/models/media_item.dart';
 import 'auth_providers.dart';
 import 'nursery_data_providers.dart';
 import 'repository_providers.dart';
@@ -51,5 +52,19 @@ final childDailyLogProvider = StreamProvider.family
         nurseryId: nurseryId,
         childId: childId,
         date: ref.watch(todayProvider),
+      );
+});
+
+/// Live photo/video stream for the teacher's classroom, newest first.
+final teacherClassroomMediaProvider =
+    StreamProvider<List<MediaItem>>((ref) async* {
+  final user = ref.watch(currentUserProvider).valueOrNull;
+  if (user?.nurseryId == null || user?.classroomId == null) {
+    yield const [];
+    return;
+  }
+  yield* ref.watch(mediaRepositoryProvider).watchByClassroom(
+        nurseryId: user!.nurseryId!,
+        classroomId: user.classroomId!,
       );
 });

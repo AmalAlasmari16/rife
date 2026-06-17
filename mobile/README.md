@@ -26,6 +26,7 @@ prototype in `../frontend` is kept for reference only.
 |10 | Push notifications                          | ✅ done     |
 |11 | Digital enrollment                          | ✅ done     |
 | + | Firestore security rules + announcements    | ✅ done     |
+| + | Photo / video gallery (teacher → parent)    | ✅ done     |
 
 ---
 

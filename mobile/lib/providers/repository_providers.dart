@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -13,6 +14,7 @@ import '../data/repositories/daily_log_repository.dart';
 import '../data/repositories/enrollment_repository.dart';
 import '../data/repositories/invite_repository.dart';
 import '../data/repositories/invoice_repository.dart';
+import '../data/repositories/media_repository.dart';
 import '../data/repositories/messaging_repository.dart';
 import '../data/repositories/nursery_repository.dart';
 import '../data/repositories/platform_repository.dart';
@@ -82,6 +84,17 @@ final enrollmentRepositoryProvider = Provider<EnrollmentRepository>(
 
 final announcementRepositoryProvider = Provider<AnnouncementRepository>(
   (ref) => AnnouncementRepository(ref.watch(firestoreProvider)),
+);
+
+final firebaseStorageProvider = Provider<FirebaseStorage>(
+  (ref) => FirebaseStorage.instance,
+);
+
+final mediaRepositoryProvider = Provider<MediaRepository>(
+  (ref) => MediaRepository(
+    ref.watch(firestoreProvider),
+    ref.watch(firebaseStorageProvider),
+  ),
 );
 
 final firebaseMessagingProvider = Provider<FirebaseMessaging>(

@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../data/models/announcement.dart';
 import '../data/models/child.dart';
 import '../data/models/daily_log.dart';
+import '../data/models/media_item.dart';
 import '../data/models/message.dart';
 import 'auth_providers.dart';
 import 'nursery_data_providers.dart';
@@ -89,5 +90,21 @@ final parentAnnouncementsProvider =
   yield* ref.watch(announcementRepositoryProvider).watchForParent(
         nurseryId: user!.nurseryId!,
         classroomId: selected?.classroomId,
+      );
+});
+
+/// Photo/video gallery for the selected child's classroom.
+final parentChildMediaProvider =
+    StreamProvider<List<MediaItem>>((ref) async* {
+  final user = ref.watch(currentUserProvider).valueOrNull;
+  final selected = ref.watch(selectedChildProvider);
+  if (user?.nurseryId == null || selected == null) {
+    yield const [];
+    return;
+  }
+  yield* ref.watch(mediaRepositoryProvider).watchForChild(
+        nurseryId: user!.nurseryId!,
+        classroomId: selected.classroomId,
+        childId: selected.id,
       );
 });

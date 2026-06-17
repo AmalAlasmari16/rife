@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../providers/auth_providers.dart';
 import '../../../providers/repository_providers.dart';
 import '../../router/routes.dart';
+import '../parent/messages_tab.dart';
 import '../subscription/widgets/trial_banner.dart';
 import 'check_in_screen.dart';
+import 'gallery_tab.dart';
 import 'today_tab.dart';
 
 class TeacherShell extends ConsumerStatefulWidget {
@@ -24,16 +25,16 @@ class _TeacherShellState extends ConsumerState<TeacherShell> {
       case 1:
         return const CheckInScreen();
       case 2:
-        return const _ComingSoon(
-          icon: Icons.forum_outlined,
-          title: 'الرسائل',
-          subtitle: 'افتح المحادثات من شاشة الطفل.',
-        );
+        return const TeacherGalleryTab();
+      case 3:
+        return const MessagesTab();
       case 0:
       default:
         return const TodayTab();
     }
   }
+
+  bool get _isImmersive => _index == 1 || _index == 2;
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +54,7 @@ class _TeacherShellState extends ConsumerState<TeacherShell> {
           ),
         ],
       ),
-      body: _index == 1
+      body: _isImmersive
           ? _body()
           : Column(
               children: [
@@ -74,51 +75,14 @@ class _TeacherShellState extends ConsumerState<TeacherShell> {
             label: 'الباب',
           ),
           BottomNavigationBarItem(
+            icon: Icon(Icons.photo_library_outlined),
+            label: 'الصور',
+          ),
+          BottomNavigationBarItem(
             icon: Icon(Icons.forum_outlined),
             label: 'الرسائل',
           ),
         ],
-      ),
-    );
-  }
-}
-
-class _ComingSoon extends StatelessWidget {
-  const _ComingSoon({
-    required this.icon,
-    required this.title,
-    required this.subtitle,
-  });
-
-  final IconData icon;
-  final String title;
-  final String subtitle;
-
-  @override
-  Widget build(BuildContext context) {
-    final textTheme = Theme.of(context).textTheme;
-    return Center(
-      child: Padding(
-        padding: const EdgeInsets.all(24),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(icon, size: 56, color: Colors.grey.shade400),
-            const SizedBox(height: 12),
-            Text(
-              title,
-              style: textTheme.titleLarge?.copyWith(
-                fontWeight: FontWeight.w700,
-              ),
-            ),
-            const SizedBox(height: 4),
-            Text(
-              subtitle,
-              textAlign: TextAlign.center,
-              style: textTheme.bodyMedium,
-            ),
-          ],
-        ),
       ),
     );
   }

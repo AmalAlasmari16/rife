@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../providers/repository_providers.dart';
+import 'gallery_tab.dart';
 import 'history_tab.dart';
 import 'messages_tab.dart';
 import 'parent_home_tab.dart';
@@ -21,6 +22,8 @@ class _ParentShellState extends ConsumerState<ParentShell> {
       case 1:
         return const HistoryTab();
       case 2:
+        return const ParentGalleryTab();
+      case 3:
         return const MessagesTab();
       case 0:
       default:
@@ -33,6 +36,8 @@ class _ParentShellState extends ConsumerState<ParentShell> {
       case 1:
         return 'الأرشيف';
       case 2:
+        return 'الصور';
+      case 3:
         return 'الرسائل';
       case 0:
       default:
@@ -65,6 +70,10 @@ class _ParentShellState extends ConsumerState<ParentShell> {
           BottomNavigationBarItem(
             icon: Icon(Icons.calendar_month_outlined),
             label: 'الأرشيف',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.photo_library_outlined),
+            label: 'الصور',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.forum_outlined),
