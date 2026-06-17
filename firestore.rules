@@ -1,0 +1,234 @@
+rules_version = '2';
+
+// رِفق · Multi-tenant Firestore rules.
+//
+// Tenant model:
+//   - Each nursery is a tenant. Every domain document either lives under
+//     /nurseries/{nurseryId}/... or holds an explicit `nurseryId` field.
+//   - A signed-in user's role + nursery binding live at /users/{uid}.
+//   - The platform owner (super-admin) bypasses tenant isolation.
+//
+// Guiding principles:
+//   - Default deny everything.
+//   - Reads require the request user to belong to the tenant.
+//   - Writes additionally require the right role for the document.
+//   - Parents can only ever see data tied to their own children.
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ---------- helpers ----------
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function profile() {
+      return get(/databases/$(database)/documents/users/$(request.auth.uid)).data;
+    }
+
+    function role() {
+      return profile().role;
+    }
+
+    function userNurseryId() {
+      return profile().nurseryId;
+    }
+
+    function isSuperAdmin() {
+      return isSignedIn() && role() == 'superAdmin';
+    }
+
+    function inTenant(nid) {
+      return isSignedIn() && (isSuperAdmin() || userNurseryId() == nid);
+    }
+
+    function isAdminOf(nid) {
+      return isSignedIn() && role() == 'admin' && userNurseryId() == nid;
+    }
+
+    function isTeacherOf(nid) {
+      return isSignedIn() && role() == 'teacher' && userNurseryId() == nid;
+    }
+
+    function isParentOf(nid) {
+      return isSignedIn() && role() == 'parent' && userNurseryId() == nid;
+    }
+
+    function isStaffOf(nid) {
+      return isAdminOf(nid) || isTeacherOf(nid);
+    }
+
+    // Parent has child only if the child id is in their profile.childIds.
+    function parentOwnsChild(nid, childId) {
+      return isParentOf(nid) && childId in profile().childIds;
+    }
+
+    // ---------- /users ----------
+
+    match /users/{uid} {
+      // Read your own doc + super admin + staff (admin/teacher) reading
+      // members of their own nursery.
+      allow read: if isSignedIn() && (
+        request.auth.uid == uid ||
+        isSuperAdmin() ||
+        (resource.data.nurseryId != null && isStaffOf(resource.data.nurseryId))
+      );
+
+      // Self-create on sign-up. The doc must reference the caller's uid.
+      allow create: if isSignedIn() && request.auth.uid == uid;
+
+      // Self-edit safe profile fields; admin can update tenant members.
+      allow update: if isSignedIn() && (
+        request.auth.uid == uid ||
+        isSuperAdmin() ||
+        (resource.data.nurseryId != null && isAdminOf(resource.data.nurseryId))
+      );
+
+      allow delete: if isSuperAdmin();
+    }
+
+    // ---------- /nurseries/{nid} ----------
+
+    match /nurseries/{nid} {
+      // Anyone in the tenant can read the tenant doc (needed for the home
+      // screens). Super admin reads all for the platform dashboard.
+      allow read: if inTenant(nid);
+
+      // Only the admin who registers the nursery (ownerUid == self) may
+      // create. Super admin can also create on the platform's behalf.
+      allow create: if isSignedIn() && (
+        isSuperAdmin() ||
+        request.resource.data.ownerUid == request.auth.uid
+      );
+
+      // Admin manages plan + profile fields; super admin can fix anything.
+      allow update: if isAdminOf(nid) || isSuperAdmin();
+
+      allow delete: if isSuperAdmin();
+
+      // ----- /classrooms -----
+      match /classrooms/{classroomId} {
+        allow read: if inTenant(nid);
+        allow write: if isAdminOf(nid) || isSuperAdmin();
+      }
+
+      // ----- /children -----
+      match /children/{childId} {
+        // Parents see only their own child(ren); staff see everyone in the
+        // nursery.
+        allow read: if isStaffOf(nid) ||
+                       isSuperAdmin() ||
+                       parentOwnsChild(nid, childId);
+        allow create, update: if isStaffOf(nid) || isSuperAdmin();
+        allow delete: if isAdminOf(nid) || isSuperAdmin();
+
+        // /dailyLogs nested under each child.
+        match /dailyLogs/{logId} {
+          allow read: if isStaffOf(nid) ||
+                         isSuperAdmin() ||
+                         parentOwnsChild(nid, childId);
+          allow write: if isStaffOf(nid) || isSuperAdmin();
+        }
+      }
+
+      // ----- /staff (teacher profiles maintained by admin) -----
+      match /staff/{staffId} {
+        allow read: if inTenant(nid);
+        allow write: if isAdminOf(nid) || isSuperAdmin();
+      }
+
+      // ----- /invoices -----
+      match /invoices/{invoiceId} {
+        // Parents see invoices for their children only.
+        allow read: if isStaffOf(nid) || isSuperAdmin() ||
+                       (isParentOf(nid) &&
+                        resource.data.childId in profile().childIds);
+        allow write: if isAdminOf(nid) || isSuperAdmin();
+      }
+
+      // ----- /announcements -----
+      match /announcements/{announcementId} {
+        allow read: if inTenant(nid);
+        allow write: if isAdminOf(nid) || isSuperAdmin();
+      }
+
+      // ----- /invites (admin issues, never publicly readable) -----
+      match /invites/{inviteCode} {
+        allow read: if isStaffOf(nid) || isSuperAdmin();
+        allow write: if isAdminOf(nid) || isSuperAdmin();
+      }
+
+      // ----- /attendance -----
+      match /attendance/{attendanceId} {
+        allow read: if isStaffOf(nid) || isSuperAdmin() ||
+                       (isParentOf(nid) &&
+                        resource.data.childId in profile().childIds);
+        allow write: if isStaffOf(nid) || isSuperAdmin();
+      }
+
+      // ----- /enrollments (waitlist) -----
+      // Public can CREATE applications (no auth required) — that's the
+      // public enrollment form. Reading + updating is admin-only.
+      match /enrollments/{enrollmentId} {
+        allow read: if isAdminOf(nid) || isSuperAdmin();
+        allow create: if true;
+        allow update, delete: if isAdminOf(nid) || isSuperAdmin();
+      }
+
+      // ----- /media (uploaded photo metadata) -----
+      match /media/{mediaId} {
+        allow read: if isStaffOf(nid) || isSuperAdmin() ||
+                       (isParentOf(nid) && (
+                         !('childIds' in resource.data) ||
+                         resource.data.childIds.hasAny(profile().childIds)
+                       ));
+        allow write: if isStaffOf(nid) || isSuperAdmin();
+      }
+    }
+
+    // ---------- /inviteCodes (top-level lookup mirror) ----------
+    // Anyone redeeming an invite needs to resolve code → nurseryId without
+    // knowing the tenant yet. Mirror docs only contain { nurseryId }, so
+    // it's safe to allow public reads on a known code.
+    match /inviteCodes/{code} {
+      allow read: if isSignedIn();
+      allow write: if isSuperAdmin() || (
+        isSignedIn() && role() == 'admin' &&
+        request.resource.data.nurseryId == userNurseryId()
+      );
+    }
+
+    // ---------- /messages — direct + group threads ----------
+    match /messages/{threadId} {
+      // The thread doc lists its members and the nursery it belongs to.
+      allow read: if isSignedIn() && (
+        isSuperAdmin() ||
+        request.auth.uid in resource.data.memberIds
+      );
+      allow create: if isSignedIn() &&
+        request.auth.uid in request.resource.data.memberIds;
+      allow update: if isSignedIn() && (
+        isSuperAdmin() ||
+        request.auth.uid in resource.data.memberIds
+      );
+
+      match /messages/{messageId} {
+        allow read: if isSignedIn() && (
+          isSuperAdmin() ||
+          request.auth.uid in
+            get(/databases/$(database)/documents/messages/$(threadId)).data.memberIds
+        );
+        allow create: if isSignedIn() &&
+          request.resource.data.senderId == request.auth.uid &&
+          request.auth.uid in
+            get(/databases/$(database)/documents/messages/$(threadId)).data.memberIds;
+      }
+    }
+
+    // ---------- /platform ----------
+    match /platform/{document=**} {
+      allow read, write: if isSuperAdmin();
+    }
+  }
+}

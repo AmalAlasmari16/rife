@@ -4,6 +4,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../data/repositories/announcement_repository.dart';
 import '../data/repositories/attendance_repository.dart';
 import '../data/repositories/auth_repository.dart';
 import '../data/repositories/child_repository.dart';
@@ -77,6 +78,10 @@ final invoiceRepositoryProvider = Provider<InvoiceRepository>(
 
 final enrollmentRepositoryProvider = Provider<EnrollmentRepository>(
   (ref) => EnrollmentRepository(ref.watch(firestoreProvider)),
+);
+
+final announcementRepositoryProvider = Provider<AnnouncementRepository>(
+  (ref) => AnnouncementRepository(ref.watch(firestoreProvider)),
 );
 
 final firebaseMessagingProvider = Provider<FirebaseMessaging>(

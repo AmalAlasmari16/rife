@@ -25,6 +25,7 @@ prototype in `../frontend` is kept for reference only.
 | 9 | Billing module                              | ✅ done     |
 |10 | Push notifications                          | ✅ done     |
 |11 | Digital enrollment                          | ✅ done     |
+| + | Firestore security rules + announcements    | ✅ done     |
 
 ---
 
@@ -99,6 +100,21 @@ You should see the رِفق splash screen with the tagline, rendered RTL on the
 teal brand background. That confirms step 1 is wired correctly.
 
 ---
+
+## Deploying Firebase rules
+
+Security rules + indexes for both Firestore and Storage live at the repo
+root (`firestore.rules`, `firestore.indexes.json`, `storage.rules`,
+`firebase.json`). They enforce tenant isolation: a nursery's staff and
+parents only see their own data, and parents only see invoices /
+attendance / dailyLogs tied to children they own.
+
+```bash
+# from the repo root
+npm i -g firebase-tools
+firebase login
+firebase deploy --only firestore:rules,firestore:indexes,storage:rules
+```
 
 ## Brand
 

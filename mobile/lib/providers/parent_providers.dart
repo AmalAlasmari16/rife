@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../data/models/announcement.dart';
 import '../data/models/child.dart';
 import '../data/models/daily_log.dart';
 import '../data/models/message.dart';
@@ -73,4 +74,20 @@ final userThreadsProvider =
     return;
   }
   yield* ref.watch(messagingRepositoryProvider).watchThreadsForUser(uid);
+});
+
+/// Announcements relevant to the selected child's classroom + any
+/// nursery-wide ones, newest first.
+final parentAnnouncementsProvider =
+    StreamProvider<List<Announcement>>((ref) async* {
+  final user = ref.watch(currentUserProvider).valueOrNull;
+  final selected = ref.watch(selectedChildProvider);
+  if (user?.nurseryId == null) {
+    yield const [];
+    return;
+  }
+  yield* ref.watch(announcementRepositoryProvider).watchForParent(
+        nurseryId: user!.nurseryId!,
+        classroomId: selected?.classroomId,
+      );
 });

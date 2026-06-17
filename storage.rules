@@ -1,0 +1,57 @@
+rules_version = '2';
+
+// Storage layout:
+//   /nurseries/{nid}/children/{childId}/...  — child photos + activity media
+//   /nurseries/{nid}/logos/...               — nursery branding
+//   /nurseries/{nid}/enrollments/{eid}/...   — uploaded enrollment documents
+//
+// Path-prefix tenancy is enforced by Storage rules (Firestore profile lookup
+// is not directly available here, so we lean on the path convention).
+
+service firebase.storage {
+  match /b/{bucket}/o {
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function userNurseryId() {
+      return firestore.get(
+        /databases/(default)/documents/users/$(request.auth.uid)
+      ).data.nurseryId;
+    }
+
+    function userRole() {
+      return firestore.get(
+        /databases/(default)/documents/users/$(request.auth.uid)
+      ).data.role;
+    }
+
+    function inTenant(nid) {
+      return isSignedIn() && (
+        userRole() == 'superAdmin' || userNurseryId() == nid
+      );
+    }
+
+    function isStaffOf(nid) {
+      return isSignedIn() && userNurseryId() == nid &&
+        (userRole() == 'admin' || userRole() == 'teacher');
+    }
+
+    // Nursery-scoped media — read for everyone in the tenant, write for
+    // staff and the platform owner.
+    match /nurseries/{nid}/{allPaths=**} {
+      allow read: if inTenant(nid);
+      allow write: if isStaffOf(nid) || userRole() == 'superAdmin';
+    }
+
+    // Public enrollment form uploads (birth certificates, vaccination cards)
+    // happen before the parent has an account. Allow unauthenticated writes
+    // only into the per-application folder and cap the file size.
+    match /enrollments/{nid}/{eid}/{file} {
+      allow read: if isStaffOf(nid) || userRole() == 'superAdmin';
+      allow write: if request.resource.size < 8 * 1024 * 1024 &&
+                      request.resource.contentType.matches('image/.*|application/pdf');
+    }
+  }
+}

@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../data/models/announcement.dart';
 import '../data/models/app_user.dart';
 import '../data/models/child.dart';
 import '../data/models/classroom.dart';
@@ -35,4 +36,16 @@ final staffProvider = StreamProvider<List<AppUser>>((ref) async* {
     return;
   }
   yield* ref.watch(userRepositoryProvider).watchStaff(nurseryId);
+});
+
+/// Streams every announcement posted in the current user's nursery
+/// (admin view).
+final announcementsProvider =
+    StreamProvider<List<Announcement>>((ref) async* {
+  final nurseryId = ref.watch(currentUserProvider).valueOrNull?.nurseryId;
+  if (nurseryId == null) {
+    yield const [];
+    return;
+  }
+  yield* ref.watch(announcementRepositoryProvider).watchAll(nurseryId);
 });

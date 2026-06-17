@@ -11,6 +11,7 @@ import '../screens/auth/phone_otp_screen.dart';
 import '../screens/auth/register_admin_screen.dart';
 import '../screens/auth/welcome_screen.dart';
 import '../screens/admin/admin_shell.dart';
+import '../screens/admin/announcements_screen.dart';
 import '../screens/admin/billing_screen.dart';
 import '../screens/admin/waitlist_screen.dart';
 import '../screens/enrollment/public_enrollment_screen.dart';
@@ -201,6 +202,10 @@ final goRouterProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: Routes.adminWaitlist,
         builder: (_, __) => const WaitlistScreen(),
+      ),
+      GoRoute(
+        path: Routes.adminAnnouncements,
+        builder: (_, __) => const AnnouncementsScreen(),
       ),
     ],
   );

@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../core/theme/app_colors.dart';
 import '../../../core/utils/date_utils.dart';
+import '../../../data/models/announcement.dart';
 import '../../../data/models/attendance.dart';
 import '../../../data/models/daily_log.dart';
 import '../../../data/models/invoice.dart';
@@ -214,6 +215,71 @@ class ParentHomeTab extends ConsumerWidget {
                       ),
                     ),
                   ),
+                ),
+              );
+            }),
+            Builder(builder: (context) {
+              final announcements =
+                  ref.watch(parentAnnouncementsProvider).valueOrNull ??
+                      const <Announcement>[];
+              if (announcements.isEmpty) return const SizedBox.shrink();
+              final shown = announcements.take(3).toList();
+              return Padding(
+                padding: const EdgeInsets.only(bottom: 16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Row(
+                      children: [
+                        const Icon(Icons.campaign_outlined,
+                            color: AppColors.accent),
+                        const SizedBox(width: 6),
+                        Text(
+                          'إعلانات الحضانة',
+                          style: textTheme.titleMedium?.copyWith(
+                            fontWeight: FontWeight.w800,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 8),
+                    for (final a in shown) ...[
+                      Container(
+                        padding: const EdgeInsets.all(14),
+                        margin: const EdgeInsets.only(bottom: 8),
+                        decoration: BoxDecoration(
+                          color: AppColors.accentLight,
+                          borderRadius: BorderRadius.circular(14),
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: Text(
+                                    a.title,
+                                    style: const TextStyle(
+                                      fontWeight: FontWeight.w800,
+                                    ),
+                                  ),
+                                ),
+                                Text(
+                                  RifqDateUtils.shortDate(a.createdAt),
+                                  style: const TextStyle(
+                                    color: AppColors.textSecondary,
+                                    fontSize: 12,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 4),
+                            Text(a.body),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ],
                 ),
               );
             }),

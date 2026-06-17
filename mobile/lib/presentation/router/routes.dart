@@ -28,6 +28,9 @@ class Routes {
   static const publicEnrollment = '/enroll';
   static const adminWaitlist = '/admin/waitlist';
 
+  // Announcements
+  static const adminAnnouncements = '/admin/announcements';
+
   /// Catch-all shown when the signed-in user has no Firestore profile yet.
   static const profileMissing = '/profile-missing';
 }

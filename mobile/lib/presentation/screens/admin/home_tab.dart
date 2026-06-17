@@ -142,6 +142,53 @@ class AdminHomeTab extends ConsumerWidget {
           ),
         ),
         const SizedBox(height: 12),
+        Material(
+          color: AppColors.surface,
+          borderRadius: BorderRadius.circular(16),
+          child: InkWell(
+            borderRadius: BorderRadius.circular(16),
+            onTap: () => context.push(Routes.adminAnnouncements),
+            child: Container(
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(16),
+                border: Border.all(color: AppColors.border),
+              ),
+              child: Row(
+                children: [
+                  const CircleAvatar(
+                    backgroundColor: AppColors.accentLight,
+                    child: Icon(Icons.campaign_outlined,
+                        color: AppColors.accent),
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'الإعلانات',
+                          style: textTheme.titleMedium?.copyWith(
+                            fontWeight: FontWeight.w800,
+                          ),
+                        ),
+                        const SizedBox(height: 2),
+                        const Text(
+                          'تواصل مع جميع الأهالي أو فصل محدد',
+                          style:
+                              TextStyle(color: AppColors.textSecondary),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const Icon(Icons.chevron_left,
+                      color: AppColors.textSecondary),
+                ],
+              ),
+            ),
+          ),
+        ),
+        const SizedBox(height: 12),
         SubscriptionGate(
           require: (ac) => ac.canUseBilling,
           denied: const UpgradePrompt(feature: 'الفوترة'),
