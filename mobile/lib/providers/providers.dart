@@ -2,6 +2,7 @@
 library;
 
 export 'auth_providers.dart';
+export 'invoice_providers.dart';
 export 'nursery_data_providers.dart';
 export 'parent_providers.dart';
 export 'platform_providers.dart';

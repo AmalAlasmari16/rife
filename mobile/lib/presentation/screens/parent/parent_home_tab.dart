@@ -1,13 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'package:go_router/go_router.dart';
+
 import '../../../core/theme/app_colors.dart';
 import '../../../core/utils/date_utils.dart';
 import '../../../data/models/attendance.dart';
 import '../../../data/models/daily_log.dart';
+import '../../../data/models/invoice.dart';
 import '../../../providers/auth_providers.dart';
+import '../../../providers/invoice_providers.dart';
 import '../../../providers/parent_providers.dart';
 import '../../../providers/teacher_providers.dart';
+import '../../router/routes.dart';
 import '../../widgets/child_qr_card.dart';
 import '../../widgets/loading_view.dart';
 
@@ -151,6 +156,67 @@ class ParentHomeTab extends ConsumerWidget {
               },
             ),
             const SizedBox(height: 16),
+            Builder(builder: (context) {
+              final invoices =
+                  ref.watch(selectedChildInvoicesProvider).valueOrNull ??
+                      const <Invoice>[];
+              final unpaid = invoices
+                  .where((i) =>
+                      i.status == InvoiceStatus.unpaid ||
+                      i.status == InvoiceStatus.overdue)
+                  .toList();
+              if (unpaid.isEmpty) return const SizedBox.shrink();
+              final total =
+                  unpaid.fold<int>(0, (a, b) => a + b.amount);
+              return Padding(
+                padding: const EdgeInsets.only(bottom: 16),
+                child: Material(
+                  color: AppColors.surface,
+                  borderRadius: BorderRadius.circular(16),
+                  child: InkWell(
+                    borderRadius: BorderRadius.circular(16),
+                    onTap: () => context.push(Routes.parentInvoices),
+                    child: Container(
+                      padding: const EdgeInsets.all(14),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(16),
+                        border: Border.all(
+                          color: AppColors.danger.withOpacity(0.4),
+                        ),
+                      ),
+                      child: Row(
+                        children: [
+                          const CircleAvatar(
+                            backgroundColor: Color(0xFFFFE3E3),
+                            child: Icon(Icons.receipt_long_outlined,
+                                color: AppColors.danger),
+                          ),
+                          const SizedBox(width: 12),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment:
+                                  CrossAxisAlignment.start,
+                              children: [
+                                const Text(
+                                  'فواتير مستحقة',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w800,
+                                    color: AppColors.danger,
+                                  ),
+                                ),
+                                Text('$total ريال · ${unpaid.length} فاتورة'),
+                              ],
+                            ),
+                          ),
+                          const Icon(Icons.chevron_left,
+                              color: AppColors.textSecondary),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              );
+            }),
             Builder(builder: (context) {
               final user = ref.watch(currentUserProvider).valueOrNull;
               if (user?.nurseryId == null) return const SizedBox.shrink();

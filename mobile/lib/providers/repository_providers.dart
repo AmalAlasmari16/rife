@@ -8,6 +8,7 @@ import '../data/repositories/child_repository.dart';
 import '../data/repositories/classroom_repository.dart';
 import '../data/repositories/daily_log_repository.dart';
 import '../data/repositories/invite_repository.dart';
+import '../data/repositories/invoice_repository.dart';
 import '../data/repositories/messaging_repository.dart';
 import '../data/repositories/nursery_repository.dart';
 import '../data/repositories/platform_repository.dart';
@@ -64,4 +65,8 @@ final geminiServiceProvider = Provider<GeminiService>(
 
 final messagingRepositoryProvider = Provider<MessagingRepository>(
   (ref) => MessagingRepository(ref.watch(firestoreProvider)),
+);
+
+final invoiceRepositoryProvider = Provider<InvoiceRepository>(
+  (ref) => InvoiceRepository(ref.watch(firestoreProvider)),
 );

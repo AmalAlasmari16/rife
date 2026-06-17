@@ -22,7 +22,7 @@ prototype in `../frontend` is kept for reference only.
 | 6 | Teacher (attendance, daily log, AI report)  | ✅ done     |
 | 7 | Parent (dashboard, reports, messaging)      | ✅ done     |
 | 8 | QR check-in / check-out                     | ✅ done     |
-| 9 | Billing module                              | ⏳ pending  |
+| 9 | Billing module                              | ✅ done     |
 |10 | Push notifications                          | ⏳ pending  |
 |11 | Digital enrollment                          | ⏳ pending  |
 

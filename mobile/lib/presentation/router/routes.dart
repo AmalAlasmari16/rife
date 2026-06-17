@@ -20,6 +20,10 @@ class Routes {
   static const paywall = '/paywall';
   static const subscriptionManage = '/admin/subscription';
 
+  // Admin extras
+  static const billing = '/admin/billing';
+  static const parentInvoices = '/parent/invoices';
+
   /// Catch-all shown when the signed-in user has no Firestore profile yet.
   static const profileMissing = '/profile-missing';
 }

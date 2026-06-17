@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../core/theme/app_colors.dart';
 import '../../../providers/nursery_data_providers.dart';
 import '../../../providers/subscription_providers.dart';
+import '../../router/routes.dart';
 import '../../widgets/loading_view.dart';
+import '../../widgets/subscription_gate.dart';
 import '../super_admin/widgets/stat_tile.dart';
 
 class AdminHomeTab extends ConsumerWidget {
@@ -93,28 +96,54 @@ class AdminHomeTab extends ConsumerWidget {
           ],
         ),
         const SizedBox(height: 16),
-        Container(
-          padding: const EdgeInsets.all(16),
-          decoration: BoxDecoration(
+        SubscriptionGate(
+          require: (ac) => ac.canUseBilling,
+          denied: const UpgradePrompt(feature: 'الفوترة'),
+          child: Material(
             color: AppColors.surface,
             borderRadius: BorderRadius.circular(16),
-            border: Border.all(color: AppColors.border),
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                'الخطوات السريعة',
-                style: textTheme.titleMedium?.copyWith(
-                  fontWeight: FontWeight.w700,
+            child: InkWell(
+              borderRadius: BorderRadius.circular(16),
+              onTap: () => context.push(Routes.billing),
+              child: Container(
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(16),
+                  border: Border.all(color: AppColors.border),
+                ),
+                child: Row(
+                  children: [
+                    const CircleAvatar(
+                      backgroundColor: AppColors.primaryLight,
+                      child: Icon(Icons.receipt_long_outlined,
+                          color: AppColors.primary),
+                    ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'الفوترة',
+                            style: textTheme.titleMedium?.copyWith(
+                              fontWeight: FontWeight.w800,
+                            ),
+                          ),
+                          const SizedBox(height: 2),
+                          const Text(
+                            'إصدار الفواتير الشهرية ومتابعة المدفوعات',
+                            style:
+                                TextStyle(color: AppColors.textSecondary),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const Icon(Icons.chevron_left,
+                        color: AppColors.textSecondary),
+                  ],
                 ),
               ),
-              const SizedBox(height: 4),
-              const Text(
-                'استخدم الأشرطة في الأسفل لإضافة فصل، تسجيل طفل جديد، أو دعوة معلمة.',
-                style: TextStyle(color: AppColors.textSecondary),
-              ),
-            ],
+            ),
           ),
         ),
       ],

@@ -11,6 +11,8 @@ import '../screens/auth/phone_otp_screen.dart';
 import '../screens/auth/register_admin_screen.dart';
 import '../screens/auth/welcome_screen.dart';
 import '../screens/admin/admin_shell.dart';
+import '../screens/admin/billing_screen.dart';
+import '../screens/parent/invoices_screen.dart';
 import '../screens/parent/parent_shell.dart';
 import '../screens/home/profile_missing_screen.dart';
 import '../screens/super_admin/super_admin_home_screen.dart';
@@ -180,6 +182,14 @@ final goRouterProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: Routes.subscriptionManage,
         builder: (_, __) => const SubscriptionManageScreen(),
+      ),
+      GoRoute(
+        path: Routes.billing,
+        builder: (_, __) => const BillingScreen(),
+      ),
+      GoRoute(
+        path: Routes.parentInvoices,
+        builder: (_, __) => const ParentInvoicesScreen(),
       ),
     ],
   );
