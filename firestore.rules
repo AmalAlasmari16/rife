@@ -64,6 +64,15 @@ service cloud.firestore {
       return isParentOf(nid) && childId in profile().childIds;
     }
 
+    // Subscription gate: writes to tenant data are blocked when the
+    // nursery's subscription is expired. Super-admin bypasses (so they
+    // can recover the tenant) and the admin can still update the nursery
+    // doc itself (so they can pay / pick a plan from the paywall).
+    function tenantActive(nid) {
+      return get(/databases/$(database)/documents/nurseries/$(nid)).data
+              .subscriptionStatus != 'expired';
+    }
+
     // ---------- /users ----------
 
     match /users/{uid} {
@@ -78,12 +87,17 @@ service cloud.firestore {
       // Self-create on sign-up. The doc must reference the caller's uid.
       allow create: if isSignedIn() && request.auth.uid == uid;
 
-      // Self-edit safe profile fields only (no role / nurseryId / childIds /
-      // classroomId changes — those would be privilege escalation). Admin
-      // can update tenant members; super admin can fix anything.
+      // Update path is split so admins editing OTHER tenant members can
+      // change their tenant binding (assigning a teacher to a classroom,
+      // linking a child to a parent), while everyone — including admins —
+      // editing THEIR OWN doc is locked out of role / nurseryId / childIds /
+      // classroomId. Without the != uid guard, an admin would self-escalate
+      // because isAdminOf(self.nurseryId) is trivially true.
       allow update: if isSignedIn() && (
         isSuperAdmin() ||
-        (resource.data.nurseryId != null && isAdminOf(resource.data.nurseryId)) ||
+        (request.auth.uid != uid &&
+         resource.data.nurseryId != null &&
+         isAdminOf(resource.data.nurseryId)) ||
         (request.auth.uid == uid &&
          !request.resource.data.diff(resource.data).affectedKeys()
            .hasAny(['role', 'nurseryId', 'childIds', 'classroomId']))
@@ -114,7 +128,7 @@ service cloud.firestore {
       // ----- /classrooms -----
       match /classrooms/{classroomId} {
         allow read: if inTenant(nid);
-        allow write: if isAdminOf(nid) || isSuperAdmin();
+        allow write: if (isAdminOf(nid) && tenantActive(nid)) || isSuperAdmin();
       }
 
       // ----- /children -----
@@ -124,22 +138,23 @@ service cloud.firestore {
         allow read: if isStaffOf(nid) ||
                        isSuperAdmin() ||
                        parentOwnsChild(nid, childId);
-        allow create, update: if isStaffOf(nid) || isSuperAdmin();
-        allow delete: if isAdminOf(nid) || isSuperAdmin();
+        allow create, update: if (isStaffOf(nid) && tenantActive(nid)) ||
+                                 isSuperAdmin();
+        allow delete: if (isAdminOf(nid) && tenantActive(nid)) || isSuperAdmin();
 
         // /dailyLogs nested under each child.
         match /dailyLogs/{logId} {
           allow read: if isStaffOf(nid) ||
                          isSuperAdmin() ||
                          parentOwnsChild(nid, childId);
-          allow write: if isStaffOf(nid) || isSuperAdmin();
+          allow write: if (isStaffOf(nid) && tenantActive(nid)) || isSuperAdmin();
         }
       }
 
       // ----- /staff (teacher profiles maintained by admin) -----
       match /staff/{staffId} {
         allow read: if inTenant(nid);
-        allow write: if isAdminOf(nid) || isSuperAdmin();
+        allow write: if (isAdminOf(nid) && tenantActive(nid)) || isSuperAdmin();
       }
 
       // ----- /invoices -----
@@ -148,19 +163,19 @@ service cloud.firestore {
         allow read: if isStaffOf(nid) || isSuperAdmin() ||
                        (isParentOf(nid) &&
                         resource.data.childId in profile().childIds);
-        allow write: if isAdminOf(nid) || isSuperAdmin();
+        allow write: if (isAdminOf(nid) && tenantActive(nid)) || isSuperAdmin();
       }
 
       // ----- /announcements -----
       match /announcements/{announcementId} {
         allow read: if inTenant(nid);
-        allow write: if isAdminOf(nid) || isSuperAdmin();
+        allow write: if (isAdminOf(nid) && tenantActive(nid)) || isSuperAdmin();
       }
 
       // ----- /invites (admin issues, never publicly readable) -----
       match /invites/{inviteCode} {
         allow read: if isStaffOf(nid) || isSuperAdmin();
-        allow write: if isAdminOf(nid) || isSuperAdmin();
+        allow write: if (isAdminOf(nid) && tenantActive(nid)) || isSuperAdmin();
       }
 
       // ----- /attendance -----
@@ -168,7 +183,7 @@ service cloud.firestore {
         allow read: if isStaffOf(nid) || isSuperAdmin() ||
                        (isParentOf(nid) &&
                         resource.data.childId in profile().childIds);
-        allow write: if isStaffOf(nid) || isSuperAdmin();
+        allow write: if (isStaffOf(nid) && tenantActive(nid)) || isSuperAdmin();
       }
 
       // ----- /enrollments (waitlist) -----
@@ -185,9 +200,10 @@ service cloud.firestore {
         allow read: if isStaffOf(nid) || isSuperAdmin() ||
                        (isParentOf(nid) && (
                          !('childIds' in resource.data) ||
-                         resource.data.childIds.hasAny(profile().childIds)
+                         resource.data.childIds.hasAny(profile().childIds) ||
+                         resource.data.childIds.size() == 0
                        ));
-        allow write: if isStaffOf(nid) || isSuperAdmin();
+        allow write: if (isStaffOf(nid) && tenantActive(nid)) || isSuperAdmin();
       }
     }
 

@@ -114,6 +114,50 @@ async function seed() {
       name: 'Parent B', role: 'parent', nurseryId: NID_B,
       childIds: [UIDS.childB],
     });
+
+    // Tenant C — same nursery as A, but a SECOND parent + child so we
+    // can prove same-tenant parent-to-parent isolation.
+    await setDoc(doc(db, `users/parent_a2_uid`), {
+      name: 'Parent A2', role: 'parent', nurseryId: NID_A,
+      childIds: ['child_a2_id'],
+    });
+    await setDoc(doc(db, `nurseries/${NID_A}/children/child_a2_id`), {
+      name: 'طفل أ٢', classroomId: UIDS.classroomA,
+      parentIds: ['parent_a2_uid'],
+    });
+    await setDoc(doc(db,
+      `nurseries/${NID_A}/children/child_a2_id/dailyLogs/2025-01-01`), {
+      mood: 'happy', activities: [],
+    });
+    await setDoc(doc(db, `nurseries/${NID_A}/invoices/inv_a2`), {
+      childId: 'child_a2_id', amount: 500, status: 'unpaid',
+    });
+
+    // Tenant D — same as A but with EXPIRED subscription, for the
+    // subscription-gate tests.
+    await setDoc(doc(db, `users/admin_exp_uid`), {
+      name: 'Admin Exp', role: 'admin', nurseryId: 'nursery_exp',
+      childIds: [],
+    });
+    await setDoc(doc(db, `users/teacher_exp_uid`), {
+      name: 'Teacher Exp', role: 'teacher', nurseryId: 'nursery_exp',
+      classroomId: 'classroom_exp', childIds: [],
+    });
+    await setDoc(doc(db, `users/parent_exp_uid`), {
+      name: 'Parent Exp', role: 'parent', nurseryId: 'nursery_exp',
+      childIds: ['child_exp'],
+    });
+    await setDoc(doc(db, `nurseries/nursery_exp`), {
+      name: 'حضانة منتهية', ownerUid: 'admin_exp_uid', plan: 'متوسط',
+      subscriptionStatus: 'expired', trialActive: false, childrenCount: 1,
+    });
+    await setDoc(doc(db, `nurseries/nursery_exp/classrooms/classroom_exp`), {
+      name: 'فصل منتهٍ', capacity: 20,
+    });
+    await setDoc(doc(db, `nurseries/nursery_exp/children/child_exp`), {
+      name: 'طفل منتهٍ', classroomId: 'classroom_exp',
+      parentIds: ['parent_exp_uid'],
+    });
     await setDoc(doc(db, `nurseries/${NID_B}`), {
       name: 'حضانة ب', ownerUid: UIDS.adminB, plan: 'بريميوم',
       subscriptionStatus: 'active', trialActive: false, childrenCount: 1,
@@ -276,6 +320,149 @@ test('HP: parent can self-edit their phone + emergency contact',
       },
     ));
   });
+
+// ===== Teacher cross-tenant write attacks (every tenant write path) =====
+
+test('teacher A cannot create classroom in nursery B', async () => {
+  await assertFails(addDoc(
+    collection(dbAs(UIDS.teacherA), `nurseries/${NID_B}/classrooms`),
+    { name: 'sneak', capacity: 10 },
+  ));
+});
+
+test('teacher A cannot create media in nursery B', async () => {
+  await assertFails(addDoc(
+    collection(dbAs(UIDS.teacherA), `nurseries/${NID_B}/media`),
+    { classroomId: UIDS.classroomB, url: 'x', type: 'photo',
+      uploadedByUid: UIDS.teacherA, childIds: [] },
+  ));
+});
+
+test('teacher A cannot read nursery B invoice', async () => {
+  await assertFails(getDoc(
+    doc(dbAs(UIDS.teacherA), `nurseries/${NID_B}/invoices/inv_b`),
+  ));
+});
+
+test('teacher A cannot read nursery B announcement', async () => {
+  await assertFails(getDoc(
+    doc(dbAs(UIDS.teacherA), `nurseries/${NID_B}/announcements/ann_b`),
+  ));
+});
+
+test('teacher A cannot create attendance in nursery B', async () => {
+  await assertFails(addDoc(
+    collection(dbAs(UIDS.teacherA), `nurseries/${NID_B}/attendance`),
+    { childId: UIDS.childB, status: 'present', date: '2025-01-01' },
+  ));
+});
+
+// ===== Parent isolation within the same tenant =====
+
+test('parent A cannot read parent A2 child (same nursery)', async () => {
+  await assertFails(getDoc(
+    doc(dbAs(UIDS.parentA), `nurseries/${NID_A}/children/child_a2_id`),
+  ));
+});
+
+test('parent A cannot read parent A2 daily log (same nursery)', async () => {
+  await assertFails(getDoc(
+    doc(dbAs(UIDS.parentA),
+      `nurseries/${NID_A}/children/child_a2_id/dailyLogs/2025-01-01`),
+  ));
+});
+
+test('parent A cannot read parent A2 invoice (same nursery)', async () => {
+  await assertFails(getDoc(
+    doc(dbAs(UIDS.parentA), `nurseries/${NID_A}/invoices/inv_a2`),
+  ));
+});
+
+// ===== Admin self-escalation =====
+
+test('admin A cannot change their own role to superAdmin', async () => {
+  await assertFails(updateDoc(
+    doc(dbAs(UIDS.adminA), `users/${UIDS.adminA}`),
+    { role: 'superAdmin' },
+  ));
+});
+
+test('admin A cannot move themselves to nursery B', async () => {
+  await assertFails(updateDoc(
+    doc(dbAs(UIDS.adminA), `users/${UIDS.adminA}`),
+    { nurseryId: NID_B },
+  ));
+});
+
+// ===== Expired subscription guards =====
+
+test('expired: teacher cannot write daily log', async () => {
+  await assertFails(setDoc(
+    doc(dbAs('teacher_exp_uid'),
+      `nurseries/nursery_exp/children/child_exp/dailyLogs/2025-01-01`),
+    { mood: 'happy', activities: [] },
+  ));
+});
+
+test('expired: teacher cannot write attendance', async () => {
+  await assertFails(setDoc(
+    doc(dbAs('teacher_exp_uid'), `nurseries/nursery_exp/attendance/2025-01-01`),
+    { statuses: { child_exp: 'present' } },
+  ));
+});
+
+test('expired: teacher cannot upload media', async () => {
+  await assertFails(addDoc(
+    collection(dbAs('teacher_exp_uid'), `nurseries/nursery_exp/media`),
+    { classroomId: 'classroom_exp', url: 'x', type: 'photo',
+      uploadedByUid: 'teacher_exp_uid', childIds: [] },
+  ));
+});
+
+test('expired: admin cannot create new child', async () => {
+  await assertFails(addDoc(
+    collection(dbAs('admin_exp_uid'), `nurseries/nursery_exp/children`),
+    { name: 'late add', classroomId: 'classroom_exp' },
+  ));
+});
+
+test('expired: admin cannot send announcements', async () => {
+  await assertFails(addDoc(
+    collection(dbAs('admin_exp_uid'),
+      `nurseries/nursery_exp/announcements`),
+    { title: 'hi', body: '...', authorUid: 'admin_exp_uid' },
+  ));
+});
+
+test('expired: admin cannot issue invoices', async () => {
+  await assertFails(addDoc(
+    collection(dbAs('admin_exp_uid'), `nurseries/nursery_exp/invoices`),
+    { childId: 'child_exp', amount: 100, status: 'unpaid' },
+  ));
+});
+
+test('HP-expired: admin CAN still update nursery doc (to pay/upgrade)',
+  async () => {
+    await assertSucceeds(updateDoc(
+      doc(dbAs('admin_exp_uid'), `nurseries/nursery_exp`),
+      { subscriptionStatus: 'active', plan: 'بريميوم' },
+    ));
+  });
+
+test('HP-expired: parent can STILL read existing data (paywall is read-OK)',
+  async () => {
+    await assertSucceeds(getDoc(
+      doc(dbAs('parent_exp_uid'),
+        `nurseries/nursery_exp/children/child_exp`),
+    ));
+  });
+
+test('HP-expired: super-admin can recover the tenant', async () => {
+  await assertSucceeds(updateDoc(
+    doc(dbAs(UIDS.superAdmin), `nurseries/nursery_exp`),
+    { subscriptionStatus: 'active' },
+  ));
+});
 
 test('signed-out user cannot read any nursery', async () => {
   await assertFails(getDoc(
