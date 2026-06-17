@@ -15,7 +15,7 @@ prototype in `../frontend` is kept for reference only.
 | # | Step                                        | Status      |
 |---|---------------------------------------------|-------------|
 | 1 | Project structure + Firebase + pubspec      | ✅ done     |
-| 2 | Authentication + role-based routing         | ⏳ pending  |
+| 2 | Authentication + role-based routing         | ✅ done     |
 | 3 | Subscription system (plans, paywall)        | ⏳ pending  |
 | 4 | Super-admin dashboard                       | ⏳ pending  |
 | 5 | Nursery admin (children, classrooms, staff) | ⏳ pending  |
@@ -39,11 +39,13 @@ lib/
 │  └─ subscription/     # SubscriptionPlan + AccessControl (pure Dart)
 ├─ data/
 │  ├─ firebase_services/  # Firebase bootstrap + options
-│  ├─ models/             # added in step 2+
-│  └─ repositories/       # added in step 2+
+│  ├─ models/             # AppUser, Nursery, Invite, ...
+│  └─ repositories/       # Auth, User, Nursery, Invite, ...
 ├─ presentation/
+│  ├─ router/           # go_router config + named routes
 │  ├─ screens/
-│  │  ├─ auth/          # step 2
+│  │  ├─ auth/          # welcome, login, register, invite, OTP
+│  │  ├─ home/          # role-specific placeholders
 │  │  ├─ subscription/  # step 3
 │  │  ├─ super_admin/   # step 4
 │  │  ├─ admin/         # step 5

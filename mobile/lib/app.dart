@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'core/constants/app_constants.dart';
 import 'core/theme/app_theme.dart';
-import 'presentation/screens/splash_screen.dart';
+import 'presentation/router/app_router.dart';
 
-class RifqApp extends StatelessWidget {
+class RifqApp extends ConsumerWidget {
   const RifqApp({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
+  Widget build(BuildContext context, WidgetRef ref) {
+    final router = ref.watch(goRouterProvider);
+    return MaterialApp.router(
       title: AppConstants.appNameAr,
       debugShowCheckedModeBanner: false,
       theme: AppTheme.light(),
@@ -22,11 +24,11 @@ class RifqApp extends StatelessWidget {
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
       ],
+      routerConfig: router,
       builder: (context, child) => Directionality(
         textDirection: TextDirection.rtl,
         child: child ?? const SizedBox.shrink(),
       ),
-      home: const SplashScreen(),
     );
   }
 }
