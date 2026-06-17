@@ -78,11 +78,15 @@ service cloud.firestore {
       // Self-create on sign-up. The doc must reference the caller's uid.
       allow create: if isSignedIn() && request.auth.uid == uid;
 
-      // Self-edit safe profile fields; admin can update tenant members.
+      // Self-edit safe profile fields only (no role / nurseryId / childIds /
+      // classroomId changes — those would be privilege escalation). Admin
+      // can update tenant members; super admin can fix anything.
       allow update: if isSignedIn() && (
-        request.auth.uid == uid ||
         isSuperAdmin() ||
-        (resource.data.nurseryId != null && isAdminOf(resource.data.nurseryId))
+        (resource.data.nurseryId != null && isAdminOf(resource.data.nurseryId)) ||
+        (request.auth.uid == uid &&
+         !request.resource.data.diff(resource.data).affectedKeys()
+           .hasAny(['role', 'nurseryId', 'childIds', 'classroomId']))
       );
 
       allow delete: if isSuperAdmin();
