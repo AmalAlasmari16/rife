@@ -14,6 +14,7 @@ import '../screens/admin/admin_shell.dart';
 import '../screens/admin/announcements_screen.dart';
 import '../screens/admin/billing_screen.dart';
 import '../screens/admin/waitlist_screen.dart';
+import '../screens/account/profile_screen.dart';
 import '../screens/enrollment/public_enrollment_screen.dart';
 import '../screens/parent/invoices_screen.dart';
 import '../screens/parent/parent_shell.dart';
@@ -206,6 +207,10 @@ final goRouterProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: Routes.adminAnnouncements,
         builder: (_, __) => const AnnouncementsScreen(),
+      ),
+      GoRoute(
+        path: Routes.profile,
+        builder: (_, __) => const ProfileScreen(),
       ),
     ],
   );

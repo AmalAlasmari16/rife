@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../providers/repository_providers.dart';
 import '../../router/routes.dart';
 import '../parent/messages_tab.dart';
 import '../subscription/widgets/trial_banner.dart';
@@ -48,9 +47,9 @@ class _TeacherShellState extends ConsumerState<TeacherShell> {
             onPressed: () => context.push(Routes.subscriptionManage),
           ),
           IconButton(
-            tooltip: 'تسجيل الخروج',
-            icon: const Icon(Icons.logout),
-            onPressed: () => ref.read(authRepositoryProvider).signOut(),
+            tooltip: 'حسابي',
+            icon: const Icon(Icons.account_circle_outlined),
+            onPressed: () => context.push(Routes.profile),
           ),
         ],
       ),

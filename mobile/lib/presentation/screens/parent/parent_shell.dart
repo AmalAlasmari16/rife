@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
-import '../../../providers/repository_providers.dart';
+import '../../router/routes.dart';
 import 'gallery_tab.dart';
 import 'history_tab.dart';
 import 'messages_tab.dart';
@@ -52,9 +53,9 @@ class _ParentShellState extends ConsumerState<ParentShell> {
         title: Text(_title()),
         actions: [
           IconButton(
-            tooltip: 'تسجيل الخروج',
-            icon: const Icon(Icons.logout),
-            onPressed: () => ref.read(authRepositoryProvider).signOut(),
+            tooltip: 'حسابي',
+            icon: const Icon(Icons.account_circle_outlined),
+            onPressed: () => context.push(Routes.profile),
           ),
         ],
       ),

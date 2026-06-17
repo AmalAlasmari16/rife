@@ -27,6 +27,7 @@ prototype in `../frontend` is kept for reference only.
 |11 | Digital enrollment                          | ✅ done     |
 | + | Firestore security rules + announcements    | ✅ done     |
 | + | Photo / video gallery (teacher → parent)    | ✅ done     |
+| + | Profile screen + parent emergency contact   | ✅ done     |
 
 ---
 

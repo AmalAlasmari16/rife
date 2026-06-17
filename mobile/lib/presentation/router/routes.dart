@@ -31,6 +31,9 @@ class Routes {
   // Announcements
   static const adminAnnouncements = '/admin/announcements';
 
+  // Account
+  static const profile = '/account/profile';
+
   /// Catch-all shown when the signed-in user has no Firestore profile yet.
   static const profileMissing = '/profile-missing';
 }

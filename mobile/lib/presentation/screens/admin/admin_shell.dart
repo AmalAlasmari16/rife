@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../providers/auth_providers.dart';
-import '../../../providers/repository_providers.dart';
 import '../../router/routes.dart';
 import '../subscription/widgets/trial_banner.dart';
 import 'children_tab.dart';
@@ -57,9 +55,9 @@ class _AdminShellState extends ConsumerState<AdminShell> {
             onPressed: () => context.push(Routes.subscriptionManage),
           ),
           IconButton(
-            tooltip: 'تسجيل الخروج',
-            icon: const Icon(Icons.logout),
-            onPressed: () => ref.read(authRepositoryProvider).signOut(),
+            tooltip: 'حسابي',
+            icon: const Icon(Icons.account_circle_outlined),
+            onPressed: () => context.push(Routes.profile),
           ),
         ],
       ),

@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../core/subscription/subscription_plan.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../data/models/nursery.dart';
-import '../../../providers/auth_providers.dart';
 import '../../../providers/platform_providers.dart';
-import '../../../providers/repository_providers.dart';
+import '../../router/routes.dart';
 import '../../widgets/loading_view.dart';
 import 'nursery_detail_sheet.dart';
 import 'widgets/nursery_list_tile.dart';
@@ -39,9 +39,9 @@ class _SuperAdminHomeScreenState
         title: const Text('لوحة المنصة'),
         actions: [
           IconButton(
-            tooltip: 'تسجيل الخروج',
-            icon: const Icon(Icons.logout),
-            onPressed: () => ref.read(authRepositoryProvider).signOut(),
+            tooltip: 'حسابي',
+            icon: const Icon(Icons.account_circle_outlined),
+            onPressed: () => context.push(Routes.profile),
           ),
         ],
       ),

@@ -17,6 +17,9 @@ class AppUser {
     this.classroomId,
     this.childIds = const [],
     this.createdAt,
+    this.emergencyContactName,
+    this.emergencyContactPhone,
+    this.preferHijri = false,
   });
 
   final String id;
@@ -37,6 +40,14 @@ class AppUser {
 
   final DateTime? createdAt;
 
+  /// Parents only — secondary contact reached when the primary number is
+  /// unavailable during pickup or an incident.
+  final String? emergencyContactName;
+  final String? emergencyContactPhone;
+
+  /// Display preference: when true the parent UI shows Hijri dates first.
+  final bool preferHijri;
+
   factory AppUser.fromFirestore(DocumentSnapshot<Map<String, dynamic>> doc) {
     final data = doc.data() ?? const {};
     return AppUser(
@@ -51,6 +62,9 @@ class AppUser {
           .whereType<String>()
           .toList(),
       createdAt: (data['createdAt'] as Timestamp?)?.toDate(),
+      emergencyContactName: data['emergencyContactName'] as String?,
+      emergencyContactPhone: data['emergencyContactPhone'] as String?,
+      preferHijri: (data['preferHijri'] as bool?) ?? false,
     );
   }
 
@@ -62,6 +76,9 @@ class AppUser {
         'phone': phone,
         'classroomId': classroomId,
         'childIds': childIds,
+        'emergencyContactName': emergencyContactName,
+        'emergencyContactPhone': emergencyContactPhone,
+        'preferHijri': preferHijri,
         'createdAt': createdAt == null
             ? FieldValue.serverTimestamp()
             : Timestamp.fromDate(createdAt!),
@@ -75,6 +92,9 @@ class AppUser {
     String? phone,
     String? classroomId,
     List<String>? childIds,
+    String? emergencyContactName,
+    String? emergencyContactPhone,
+    bool? preferHijri,
   }) {
     return AppUser(
       id: id,
@@ -86,6 +106,10 @@ class AppUser {
       classroomId: classroomId ?? this.classroomId,
       childIds: childIds ?? this.childIds,
       createdAt: createdAt,
+      emergencyContactName: emergencyContactName ?? this.emergencyContactName,
+      emergencyContactPhone:
+          emergencyContactPhone ?? this.emergencyContactPhone,
+      preferHijri: preferHijri ?? this.preferHijri,
     );
   }
 }
