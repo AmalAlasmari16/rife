@@ -16,7 +16,7 @@ prototype in `../frontend` is kept for reference only.
 |---|---------------------------------------------|-------------|
 | 1 | Project structure + Firebase + pubspec      | ✅ done     |
 | 2 | Authentication + role-based routing         | ✅ done     |
-| 3 | Subscription system (plans, paywall)        | ⏳ pending  |
+| 3 | Subscription system (plans, paywall)        | ✅ done     |
 | 4 | Super-admin dashboard                       | ⏳ pending  |
 | 5 | Nursery admin (children, classrooms, staff) | ⏳ pending  |
 | 6 | Teacher (attendance, daily log, AI report)  | ⏳ pending  |

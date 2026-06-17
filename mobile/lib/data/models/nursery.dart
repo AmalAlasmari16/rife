@@ -24,6 +24,7 @@ class Nursery {
     this.subscriptionExpiry,
     this.branchCount = 1,
     this.createdAt,
+    this.planSelectedAt,
   });
 
   final String id;
@@ -40,6 +41,11 @@ class Nursery {
   final DateTime? subscriptionExpiry;
   final int branchCount;
   final DateTime? createdAt;
+
+  /// When the admin first picked a plan from the onboarding screen.
+  /// `null` until they go through plan selection, which the router uses
+  /// to gate admins behind /plan-selection on first launch.
+  final DateTime? planSelectedAt;
 
   SubscriptionSnapshot toSubscriptionSnapshot() => SubscriptionSnapshot(
         plan: plan,
@@ -69,6 +75,7 @@ class Nursery {
           (data['subscriptionExpiry'] as Timestamp?)?.toDate(),
       branchCount: (data['branchCount'] as num?)?.toInt() ?? 1,
       createdAt: (data['createdAt'] as Timestamp?)?.toDate(),
+      planSelectedAt: (data['planSelectedAt'] as Timestamp?)?.toDate(),
     );
   }
 
@@ -90,5 +97,8 @@ class Nursery {
         'createdAt': createdAt == null
             ? FieldValue.serverTimestamp()
             : Timestamp.fromDate(createdAt!),
+        'planSelectedAt': planSelectedAt == null
+            ? null
+            : Timestamp.fromDate(planSelectedAt!),
       };
 }

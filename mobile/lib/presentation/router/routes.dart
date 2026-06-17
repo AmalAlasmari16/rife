@@ -15,6 +15,11 @@ class Routes {
   static const teacherHome = '/teacher';
   static const parentHome = '/parent';
 
+  // Subscription
+  static const planSelection = '/plan-selection';
+  static const paywall = '/paywall';
+  static const subscriptionManage = '/admin/subscription';
+
   /// Catch-all shown when the signed-in user has no Firestore profile yet.
   static const profileMissing = '/profile-missing';
 }
